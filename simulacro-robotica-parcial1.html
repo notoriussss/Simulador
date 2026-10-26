@@ -1,0 +1,413 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<style>body{margin:0}</style>
+<title>Simulacro Robótica</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@600;700&family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500;600&display=swap">
+<style>
+/* Layout: una sola columna tipo hoja de examen. Inicio = ajustes + 12 modelos; examen = hoja con barra fija; resultado = nota, análisis de riesgo y revisión. */
+:root{
+  --bg:#eef1f6; --paper:#ffffff; --ink:#101a30; --muted:#566178; --line:#d3dae6;
+  --accent:#1f4fd8; --accent-ink:#ffffff; --sel:#e4ebff;
+  --ok:#17803d; --ok-bg:#e1f3e7; --bad:#b42318; --bad-bg:#fcebe9; --warn:#8a5200; --warn-bg:#fff0d0;
+  --f-display:'Bricolage Grotesque','Segoe UI',system-ui,sans-serif;
+  --f-body:'IBM Plex Sans','Segoe UI',system-ui,sans-serif;
+  --f-mono:'IBM Plex Mono',ui-monospace,Consolas,monospace;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --bg:#0b1222; --paper:#131c32; --ink:#e7ecf8; --muted:#9aa7c4; --line:#27334f;
+  --accent:#86a8ff; --accent-ink:#0b1222; --sel:#1b2a54;
+  --ok:#62d28d; --ok-bg:#123020; --bad:#ff8f85; --bad-bg:#3b1815; --warn:#f2bd5e; --warn-bg:#382b0e; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#0b1222; --paper:#131c32; --ink:#e7ecf8; --muted:#9aa7c4; --line:#27334f;
+  --accent:#86a8ff; --accent-ink:#0b1222; --sel:#1b2a54;
+  --ok:#62d28d; --ok-bg:#123020; --bad:#ff8f85; --bad-bg:#3b1815; --warn:#f2bd5e; --warn-bg:#382b0e; color-scheme:dark}
+
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--ink);font:15px/1.5 var(--f-body)}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);background:var(--bg);z-index:10}
+.wrap{max-width:880px;margin:0 auto;padding-block:20px 56px;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+button{font:inherit;color:inherit;cursor:pointer}
+button:focus-visible,input:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+h1,h2,h3{font-family:var(--f-display);margin:0;text-wrap:balance;line-height:1.15}
+.mono{font-family:var(--f-mono)}
+.label{font:500 11px/1 var(--f-mono);letter-spacing:.09em;text-transform:uppercase;color:var(--muted)}
+
+/* inicio */
+.hero{padding:8px 0 22px}
+.hero h1{font-size:clamp(28px,6vw,40px);letter-spacing:-.01em}
+.hero p{margin:8px 0 0;max-width:62ch;color:var(--muted)}
+.panel{background:var(--paper);border:1px solid var(--line);border-radius:10px;padding:16px;display:grid;gap:16px}
+.row{display:flex;flex-wrap:wrap;gap:12px 20px;align-items:center;justify-content:space-between}
+.seg{display:inline-flex;border:1px solid var(--line);border-radius:8px;overflow:hidden}
+.seg button{border:0;background:none;padding:7px 14px;font:500 13px var(--f-mono)}
+.seg button+button{border-left:1px solid var(--line)}
+.seg button[aria-pressed="true"]{background:var(--accent);color:var(--accent-ink)}
+.topics{display:flex;flex-wrap:wrap;gap:8px}
+.topics label{display:inline-flex;gap:7px;align-items:center;border:1px solid var(--line);border-radius:999px;padding:5px 12px;font-size:13px;cursor:pointer;user-select:none}
+.topics input{accent-color:var(--accent);margin:0}
+.btn{border:1px solid var(--line);background:var(--paper);border-radius:8px;padding:9px 16px;font-weight:600}
+.btn.primary{background:var(--accent);border-color:var(--accent);color:var(--accent-ink)}
+.btn:disabled{opacity:.45;cursor:not-allowed}
+h2{font-size:20px;margin:28px 0 12px}
+.models{display:grid;grid-template-columns:repeat(auto-fill,minmax(190px,1fr));gap:10px}
+.model{text-align:left;background:var(--paper);border:1px solid var(--line);border-radius:10px;padding:14px;display:grid;gap:6px}
+.model:hover{border-color:var(--accent)}
+.model b{font:700 30px/1 var(--f-display)}
+.model small{color:var(--muted);font-size:13px}
+.model .best{font:500 12px var(--f-mono)}
+.model .best.has{color:var(--ok)}
+
+/* examen */
+.bar{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;background:var(--bg);padding-block:8px;display:flex;gap:12px;align-items:center;flex-wrap:wrap}
+.prog{flex:1;min-width:130px;display:grid;gap:4px}
+.prog span{font:500 12px var(--f-mono);color:var(--muted)}
+.prog i{display:block;height:5px;border-radius:3px;background:var(--line);position:relative;overflow:hidden}
+.prog i::after{content:"";position:absolute;inset:0 auto 0 0;width:var(--w,0%);background:var(--accent);transition:width .2s}
+.paper{background:var(--paper);border:1px solid var(--line);border-radius:10px;padding:clamp(16px,4vw,32px);margin-top:8px}
+.sheet-h{border-bottom:2px solid var(--ink);padding-bottom:12px;margin-bottom:6px;display:grid;gap:4px}
+.sheet-h small{font:500 12px var(--f-mono);letter-spacing:.06em;text-transform:uppercase;color:var(--muted)}
+.sheet-h b{font:700 20px var(--f-display)}
+.qs{list-style:none;margin:0;padding:0}
+.q{padding:18px 0;border-bottom:1px solid var(--line);display:grid;gap:10px}
+.qt{margin:0;font-weight:500;display:grid;grid-template-columns:2.2ch 1fr;gap:8px}
+.qt .qn{font:600 15px var(--f-mono);color:var(--muted)}
+.opts{display:grid;grid-template-columns:1fr 1fr;gap:8px;padding-left:calc(2.2ch + 8px)}
+.opt{display:grid;grid-template-columns:auto 1fr;gap:8px;text-align:left;border:1px solid var(--line);background:none;border-radius:8px;padding:9px 11px;min-width:0}
+.opt .n{font:500 13px/1.5 var(--f-mono);color:var(--muted)}
+.opt:hover{border-color:var(--accent)}
+.opt.on{background:var(--sel);border-color:var(--accent)}
+.opt.on .n{color:var(--accent)}
+.conf{display:flex;gap:6px;flex-wrap:wrap;padding-left:calc(2.2ch + 8px)}
+.chip{border:1px solid var(--line);background:none;border-radius:999px;padding:3px 11px;font-size:12px;color:var(--muted)}
+.chip.on{color:var(--ink);border-color:var(--ink);font-weight:600}
+.chip.on.d{background:var(--warn-bg);border-color:var(--warn);color:var(--warn)}
+.note{margin:16px 0 0;font:600 13px var(--f-body)}
+
+/* resultado */
+.score{display:grid;gap:14px}
+.big{font:700 clamp(44px,12vw,72px)/1 var(--f-display);letter-spacing:-.02em}
+.big small{font-size:.4em;color:var(--muted);font-weight:600}
+.tiles{display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:8px}
+.tile{border:1px solid var(--line);border-radius:8px;padding:10px 12px;display:grid;gap:3px}
+.tile b{font:600 22px var(--f-display)}
+.tile.ok b{color:var(--ok)} .tile.bad b{color:var(--bad)}
+.tile small{color:var(--muted);font-size:12px}
+.risk{display:grid;gap:8px}
+.risk p{margin:0;max-width:70ch}
+.callout{border-radius:8px;padding:10px 12px;background:var(--warn-bg);color:var(--warn);font-weight:500}
+.callout.good{background:var(--ok-bg);color:var(--ok)}
+.rv{padding:16px 0;border-bottom:1px solid var(--line);display:grid;gap:8px}
+.rv-h{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+.tag{font:500 11px var(--f-mono);border:1px solid var(--line);border-radius:4px;padding:2px 6px;color:var(--muted)}
+.st{font:600 12px var(--f-mono);border-radius:4px;padding:2px 7px}
+.st.ok{background:var(--ok-bg);color:var(--ok)} .st.bad{background:var(--bad-bg);color:var(--bad)} .st.blank{background:var(--line);color:var(--muted)}
+.ro{display:grid;grid-template-columns:auto 1fr;gap:8px;border:1px solid var(--line);border-radius:8px;padding:7px 11px;min-width:0}
+.ro .n{font:500 13px/1.5 var(--f-mono);color:var(--muted)}
+.ro.right{background:var(--ok-bg);border-color:var(--ok)}
+.ro.wrong{background:var(--bad-bg);border-color:var(--bad)}
+.why{margin:0;color:var(--muted);font-size:14px;padding-left:calc(2.2ch + 8px)}
+
+@media (max-width:560px){.opts,.conf,.why{padding-left:0}.opts{grid-template-columns:1fr}}
+@media (prefers-reduced-motion:reduce){.prog i::after{transition:none}}
+</style>
+
+<div class="wrap" id="app"></div>
+
+<script>
+// Cada fila: [tema, pregunta, correcta, distractor, distractor, distractor, explicación]
+const TOPICS=[
+  {k:'H',n:'Historia y origen'},{k:'D',n:'Definiciones y clasificación'},{k:'L',n:'Locomoción y cinemática'},
+  {k:'R',n:'Ruedas y arreglos'},{k:'S',n:'Sensores'},{k:'A',n:'Actuadores y sistemas'},{k:'P',n:'Paradigmas y autonomía'}];
+const BANK=[
+// ---------- H: historia y origen (12)
+['H','La palabra «robot» proviene del vocablo checo «robota», que significa:','Labor o trabajo','Máquina inteligente','Movimiento espontáneo','Ser animado','«Robota» es labor o trabajo y «robotnik» es trabajador.'],
+['H','La palabra «robot» fue introducida en la obra «R.U.R.: Rossum’s Universal Robots» por:','Karel Čapek','Isaac Asimov','George Devol','Joseph Engelberger','Asimov es el de las leyes de la robótica; Devol y Engelberger, el de la robótica industrial.'],
+['H','Las leyes de la robótica fueron introducidas en 1950 por Isaac Asimov en su obra:','Yo, Robot','R.U.R.','Robotnik','El autómata','Yo, Robot (1950) presenta las tres leyes.'],
+['H','«Un robot debe obedecer las órdenes dadas por los seres humanos, excepto cuando entren en conflicto con las leyes anteriores» es la:','Segunda ley de Asimov','Primera ley de Asimov','Tercera ley de Asimov','Norma ISO 8373','Ley 1: no dañar al humano. Ley 2: obedecer. Ley 3: proteger su propia existencia.'],
+['H','«Autómata» viene del griego automatos, que significa:','Espontáneo o con movimiento propio','Trabajador','Programable','Mecánico','Un autómata es una máquina que imita la figura y los movimientos de un ser animado.'],
+['H','En el siglo I, Herón de Alejandría diseñó dispositivos que actuaban en función de:','Agua, chorros de vapor y equilibrios de pesos','Electricidad y motores','Resortes y relojería','Señales de radio',''],
+['H','En 1948 Goertz desarrolló un manipulador maestro-esclavo, con lo que aparece el concepto de:','Teleoperación','Control numérico','Robot móvil','Reprogramación','Control numérico es del MIT en 1952.'],
+['H','El primer robot programable, desarrollado por Devol en 1954, se llamó:','Dispositivo de transferencia articulada programado','Unimate','PUMA','Shakey','Unimate es el robot instalado en 1959 en General Motors.'],
+['H','En 1959 se instaló un robot Unimate en una fábrica de:','General Motors','ASEA','Cincinnati Milacron','Honda',''],
+['H','El lenguaje comercial de robots VAL surgió de la fusión de los lenguajes:','WAVE y AL','AL y PUMA','WAVE y T3','IR6 y AL','WAVE (1973) y AL (1974) dieron origen a VAL.'],
+['H','En 1898 Tesla construyó un antecedente de la teleoperación, que fue un:','Barco teleoperado','Brazo robótico','Robot humanoide','Autómata parlante',''],
+['H','Las «tortugas electrónicas» fototropistas y programables fueron creadas en 1949 por:','W. Grey Walter','Nikola Tesla','Goertz','Herón de Alejandría',''],
+// ---------- D: definiciones y clasificación (20)
+['D','«Agente activo artificial cuyo ambiente es el mundo físico» es la definición de robot de:','Russell y Norvig','Webster','Jones y Flynn','Sucar',''],
+['D','«Conexión inteligente de percepción a acción» es la definición de robot de:','Jones y Flynn','Russell y Norvig','Webster','Sucar',''],
+['D','«Una máquina programable capaz de percibir y actuar en el mundo con cierta autonomía» es la definición de:','Sucar','Webster','Russell y Norvig','Jones y Flynn',''],
+['D','La norma ISO 8373 define un robot industrial como un manipulador programable, reprogramable y multipropósito en:','Tres o más ejes','Dos ejes','Un solo eje','Exactamente cuatro ejes',''],
+['D','Según ISO 8373, característica por la cual las funciones programadas de movimiento pueden cambiarse sin alteraciones físicas:','Reprogramable','Multifuncional','Manipulador','Autónomo',''],
+['D','Según ISO 8373, capaz de adaptarse a diferentes aplicaciones con alteraciones físicas o en el sistema de control:','Multifuncional','Reprogramable','Manipulador','Autónomo',''],
+['D','Mecanismo formado por segmentos y uniones para mover objetos, normalmente en varios grados de libertad:','Manipulador','Actuador','Eslabón','Efector',''],
+['D','Un robot móvil con capacidad de manipulación se clasifica como robot:','Híbrido','Manipulador','Teleoperado','Industrial','Categorías: manipuladores (brazos), móviles e híbridos (móviles con manipulación).'],
+['D','Según Knasel, la primera generación de robots (1960) corresponde a:','Selección y colocación con manipuladores','Servocontrol con trayectoria programada','Móviles con inteligencia y vida artificial','Espaciales y militares',''],
+['D','Según Knasel, los robots móviles que usan técnicas de inteligencia y vida artificial corresponden a la generación de:','1985','1960','1975','1995',''],
+['D','Característica de un robot industrial:','Tarea repetitiva en un ambiente conocido y controlado','Ambientes desconocidos y dinámicos','Interacción constante con personas','Gran movilidad en exteriores','Industrial: poca flexibilidad, poca movilidad, sin interacción con personas.'],
+['D','Característica de un robot de servicio:','Opera en ambientes desconocidos y dinámicos','Realiza tareas repetitivas en ambiente controlado','No interactúa con personas','Tiene poca movilidad',''],
+['D','Robot que opera de manera semi o totalmente autónoma para realizar servicios útiles, excluidas las operaciones de manufactura:','Robot de servicio','Robot industrial','Telemanipulador','Robot híbrido','Definición de la Federación Internacional de Robótica.'],
+['D','Cada uno de los movimientos independientes que puede realizar una articulación respecto a la anterior se llama:','Grado de libertad','Eslabón','Eje de rotación','Actuador',''],
+['D','Tipo de control en el que los movimientos se realizan en un orden determinado:','Secuencia controlada','Trayectoria continua','Adaptativo','Teleoperado',''],
+['D','Tipo de control en el que el robot es operado de modo remoto por un operador humano:','Teleoperado','Adaptativo','Secuencia controlada','Trayectoria continua',''],
+['D','Un control adaptativo es «por aprendizaje» cuando:','La experiencia de ciclos anteriores cambia los parámetros o algoritmos de control','El movimiento se ajusta según las lecturas de sensores','Los movimientos siguen un orden fijo','Un operador lo maneja a distancia','Si se ajusta con lecturas de sensores se llama sensorial.'],
+['D','Cartesiano, SCARA, antropomórfico, paralelo, esférico y cilíndrico son tipos de:','Estructura mecánica','Control','Locomoción','Sensores',''],
+['D','Robot ruso que en 1970 exploró la Luna a control remoto desde la Tierra:','Lunokhod 1','Mars Pathfinder','Shakey','SSRMS',''],
+['D','Una de las tendencias actuales, con plantas totalmente automatizadas, son las:','Fábricas a oscuras','Fábricas modulares','Líneas de ensamblaje manuales','Fábricas teleoperadas','Otras tendencias: vehículos autónomos y asistentes personales.'],
+// ---------- L: locomoción y cinemática (16)
+['L','Los cuatro subsistemas de un robot móvil son:','Locomoción, percepción, razonamiento y comunicación','Locomoción, manipulación, control y energía','Percepción, planificación, actuación y potencia','Sensores, actuadores, baterías y control',''],
+['L','Los actuadores que cambian la posición del robot respecto al medio ambiente son los de:','Locomoción','Manipulación','Percepción','Comunicación','Los de manipulación mueven otros objetos del ambiente.'],
+['L','Estudio del movimiento sin considerar las fuerzas que lo afectan:','Cinemática','Dinámica','Odometría','Estática','La dinámica sí estudia las fuerzas y los cambios que provocan.'],
+['L','Cinemática que, dadas la posición inicial y final deseadas, determina la serie de movimientos a realizar:','Inversa','Directa','Dinámica','Holonómica','La directa, dados los movimientos, calcula la posición final.'],
+['L','Restricción en la que los grados de libertad están desacoplados, como en robots diferenciales y síncronos:','Holonómica','No holonómica','Estática','Dinámica',''],
+['L','Los triciclos y carros, con grados de libertad acoplados, tienen restricciones:','No holonómicas','Holonómicas','Estáticas','Síncronas','Para girar deben moverse hacia adelante o atrás.'],
+['L','Sistema que se mantiene balanceado mientras la proyección vertical de su centro de gravedad cae dentro del polígono de soporte:','Balance estático','Balance dinámico','Locomoción dinámica','Cinemática inversa',''],
+['L','Caso en que la proyección del centro de masa puede quedar fuera del área de soporte durante breves periodos controlados:','Balance dinámico','Balance estático','Estabilidad estática','Cinemática directa',''],
+['L','La locomoción estática se caracteriza por ser:','Segura, lenta e ineficiente','Rápida y eficiente','Inestable si no se mueve','Posible con menos de tres patas','Apoya el peso en al menos tres patas, con el CdG dentro del triángulo de apoyo.'],
+['L','La locomoción dinámica se caracteriza por ser:','Rápida y eficiente, pero exigente en accionamiento y control','Segura, lenta e ineficiente','Siempre con tres patas en contacto','Estable sin necesidad de moverse','El robot cae a menos que se mueva.'],
+['L','Por su simetría, la forma de robot más fácil de navegar es la:','Cilíndrica','Cuadrada','Rectangular','Triangular','En un robot cuadrado la navegación depende de la orientación.'],
+['L','En un robot hexápodo el equilibrio se mantiene moviendo de forma alternada:','Tres patas: dos de un lado y una del otro','Dos patas a la vez','Una pata a la vez','Las seis patas juntas',''],
+['L','Los robots sin partes móviles diferenciadas, que imitan serpientes o gusanos, se denominan:','Ápodos','Bípedos','Híbridos','Omnidireccionales',''],
+['L','La principal ventaja de los robots con patas frente a los de ruedas es:','Mayor versatilidad en distintos tipos de terreno','Menor consumo de energía','Control más sencillo','Mayor estabilidad','Son más complejos, inestables y consumen más energía.'],
+['L','Tarea del robot móvil que consiste en decidir la serie de pasos para cumplir una o más metas:','Planeación','Navegación','Localización','Manipulación',''],
+['L','Tarea del robot móvil que consiste en evitar obstáculos e ir a un lugar meta:','Navegación','Planeación','Localización','Reconocimiento',''],
+// ---------- R: ruedas y arreglos (14)
+['R','Una ventaja de los robots con ruedas es que:','Son más simples de construir y de controlar','Se adaptan a cualquier terreno','Son más estables en terreno irregular','No tienen deslizamiento',''],
+['R','Un robot con ruedas tiene problemas cuando las diferencias del terreno son mayores que:','El radio de las ruedas','El peso del robot','El diámetro del chasis','La velocidad máxima','Una alternativa son las ruedas «grandes».'],
+['R','Rueda que proporciona la fuerza de tracción:','Motriz','Directriz','Loca o castor','Fija',''],
+['R','Rueda encargada de la orientación o direccionamiento:','Directriz','Motriz','Loca o castor','Fija',''],
+['R','Rueda orientable no controlable:','Loca o castor','Directriz','Motriz','Omnidireccional',''],
+['R','Punto alrededor del cual cada rueda sigue una trayectoria circular:','Centro de curvatura instantáneo (CCI)','Centro de gravedad','Polígono de soporte','Centro de masa',''],
+['R','En una trayectoria recta, el CCI se encuentra:','En el infinito','En el centro del robot','Sobre la rueda motriz','En el eje trasero',''],
+['R','Esquema de dos ruedas en un eje común, controladas de forma independiente, con ruedas adicionales caster para el balance:','Diferencial','Síncrono','Triciclo','Ackermann',''],
+['R','Un arreglo diferencial de cuatro ruedas se conoce como:','Diamante','Triángulo','Cuadrado','Cruz','Con tres ruedas se llama triángulo. Para ir recto las ruedas deben tener la misma velocidad (encoders).'],
+['R','Esquema cuyas ruedas apuntan siempre en la misma dirección y requiere una torreta para mantener el frente del chasis:','Síncrono','Diferencial','Triciclo','Omnidireccional',''],
+['R','En el triciclo tipo A, la rueda delantera es:','Motriz y directora','Solo directora, sin tracción','Loca','Fija sin tracción','En el tipo B, dos ruedas fijas dan la tracción y la delantera solo dirige.'],
+['R','El tipo carro (Ackermann) cuenta con:','Dos ruedas de tracción y dos de dirección','Tres ruedas a 120°','Dos ruedas en un eje común','Una rueda motriz delantera','Su desventaja es la complejidad cinemática.'],
+['R','En los sistemas omnidireccionales de tres ruedas, estas se colocan a:','120°','90°','60°','180°','Usan ruedas suecas.'],
+['R','La configuración con orugas, que sigue un modelo diferencial, da pobres resultados en:','Odometría','Tracción','Estabilidad','Capacidad de carga','No hay un modelo preciso de giro y girar consume mucha potencia.'],
+// ---------- S: sensores (22)
+['S','Los sensores que emiten energía se denominan:','Activos','Pasivos','Internos','Externos','Los pasivos reciben energía pasivamente.'],
+['S','Encoders, brújulas y medidores de corriente de los motores son sensores de:','Estado interno','Estado externo','Proximidad','Contacto',''],
+['S','Medida relativa de la posición y orientación del robot a partir de la rotación de las ruedas:','Odometría','Navegación inercial','Triangulación','Telemetría',''],
+['S','Los errores sistemáticos de la odometría son especialmente graves porque son:','Acumulativos','Aleatorios','Instantáneos','Corregibles automáticamente',''],
+['S','Es un error sistemático de la odometría:','Mal alineamiento de las ruedas','Exceso de luz ambiental','Pérdida de señal GPS','Interferencia de ultrasonido','Otros: diámetros desiguales, resolución discreta del encoder y muestreo discreto.'],
+['S','Sensores que miden la aceleración angular:','Giroscopios','Acelerómetros','Encoders','Brújulas','Los acelerómetros miden la aceleración.'],
+['S','Dispositivo que combina giroscopios y acelerómetros para medir orientación (cabeceo, alabeo y guiñada), velocidad y aceleración:','Unidad de medición inercial (IMU)','Encoder absoluto','Sonar','Telémetro láser',''],
+['S','Son sensores de luz:','Fotorresistencias, fototransistores y fotodiodos','Bumpers y bigotes','Micrófonos y sonares','Encoders y brújulas',''],
+['S','Microinterruptores, «bigotes» y bumpers son sensores de:','Fuerza','Luz','Sonido','Posición y orientación',''],
+['S','Sensor que mide el tiempo que tarda en volver un sonido no audible emitido:','Sonar','Micrófono','Película piezoeléctrica','Fotodiodo',''],
+['S','Sensor que produce un voltaje cuando cambia la cantidad medida (vibración, temperatura):','Sensor de película piezoeléctrica','Micrófono','Sonar','Giroscopio','Los micrófonos trabajan con frecuencias audibles.'],
+['S','Problemas típicos de los sensores infrarrojos:','Interferencia de la luz ambiental y dependencia de la superficie','Múltiples reflexiones del haz','Deriva acumulativa','Requieren cambios en el entorno','Son de alcance cercano: de pocos cm a metros.'],
+['S','El rango aproximado de un sonar ultrasónico es de:','2 cm a 5 m','2 mm a 50 cm','10 m a 100 m','1 km a 5 km','Problemas: patrón de emisión, tipo de superficie y múltiples reflexiones.'],
+['S','Los tres métodos del telémetro láser son:','Triangulación, tiempo de vuelo y basado en fase','Triangulación, odometría y fase','Tiempo de vuelo, sonar e infrarrojo','Fase, inercial y contacto',''],
+['S','Método del telémetro láser que mide el tiempo de regreso del haz:','Tiempo de vuelo','Triangulación','Basado en fase','Correlación',''],
+['S','Alternativa más económica al telémetro láser: un apuntador láser combinado con:','Una cámara','Un sonar','Un giroscopio','Un encoder','La distancia se estima por la altura del punto o línea en la imagen.'],
+['S','Los sensores de contacto se usan principalmente para:','Evitar daño al robot como último recurso','Localizar al robot en un mapa','Medir distancias largas','Construir mapas',''],
+['S','Un inconveniente de los faros o balizas en interiores es que:','Requieren cambios en el entorno, lo cual es costoso','No tienen posición conocida','Dependen del GPS','Solo funcionan al aire libre','También limitan la flexibilidad ante entornos cambiantes.'],
+['S','Con cuatro satélites, el receptor GPS puede calcular:','Posición (x, y, z) y corrección de reloj ΔT','Solo latitud y longitud','Solo la altura','Velocidad y aceleración',''],
+['S','Para la sincronización de tiempo, cada satélite GPS tiene relojes:','Atómicos','De cuarzo','De péndulo','Solares','Los relojes de cuarzo son los de los receptores.'],
+['S','La constelación GPS original tiene 24 satélites distribuidos en:','6 órbitas con 4 satélites cada una','4 órbitas con 6 satélites cada una','3 órbitas con 8 satélites cada una','12 órbitas con 2 satélites cada una','Desde 2008 son 32 satélites, para mejorar la precisión por redundancia.'],
+['S','Microsoft Kinect permite interactuar con la Xbox 360 sin tocar ningún dispositivo, mediante:','Gestos y comandos de voz','Un control inalámbrico','Teclado y ratón','Pedales y volante',''],
+// ---------- A: actuadores y sistemas (14)
+['A','Los dos tipos principales de actuadores en un robot móvil son los de:','Locomoción y manipulación','Eléctricos y neumáticos','Internos y externos','Activos y pasivos',''],
+['A','En un motor de corriente continua con escobillas, el inducido está situado en el:','Rotor','Estator','Colector','Chasis',''],
+['A','En un motor de corriente continua, el inductor (devanado de excitación) está situado en el:','Estator','Rotor','Colector','Eje','El devanado inductor puede sustituirse por imanes.'],
+['A','La corriente llega al inducido a través del colector de delgas, sobre el cual se apoyan:','Escobillas de grafito','Imanes permanentes','Bobinas del estator','Engranajes',''],
+['A','La velocidad de giro de un motor DC puede regularse variando:','La tensión de alimentación del inducido','La masa del rotor','El número de escobillas','La temperatura ambiente','También puede variarse la tensión del inductor.'],
+['A','En un motor sin escobillas, la corriente circula por el estator y el rotor tiene:','Un imán permanente','Escobillas de grafito','Un colector de delgas','Un devanado inducido',''],
+['A','En un motor paso a paso, el giro se produce de forma:','Discreta, según un tren de pulsos','Continua','Libre','Aleatoria',''],
+['A','Los tres tipos de motores paso a paso son:','Imanes permanentes, reluctancia variable e híbridos','Con escobillas, sin escobillas y universales','Axiales, helicoidales y rectos','Inductor, inducido y colector',''],
+['A','Los motores paso a paso son fáciles de controlar en:','Bucle abierto','Bucle cerrado con GPS','Modo teleoperado','Control adaptativo','Ofrecen posicionamiento simple y exacto, y son ligeros.'],
+['A','En robótica, el juego angular de un reductor debe ser lo menor posible. Este juego se llama:','Backlash','Rigidez torsional','Relación de transmisión','Par de salida',''],
+['A','En robótica se buscan reductores con:','Bajo peso, tamaño reducido, bajo rozamiento y alta rigidez torsional','Alto rozamiento y gran inercia','Mucho juego angular','Bajo par admisible',''],
+['A','Mecanismo que convierte movimiento circular en lineal o viceversa:','Cremallera y piñón','Acoples directos','Trenes de engranajes paralelos','Tornillo sin fin y corona',''],
+['A','Los robots móviles normalmente se alimentan de:','Baterías, y algunos usan celdas solares','Líneas eléctricas','Generadores hidráulicos','Motores de combustión','Los manipuladores fijos pueden alimentarse de la red eléctrica.'],
+['A','Comunicación para programar y controlar el robot a distancia:','Telecontrol','Coordinación','Interacción humano-robot','Autonomía','Coordinación: con otros robots o máquinas. Interacción humano-robot: recibir comandos o dar información.'],
+// ---------- P: paradigmas y autonomía (22)
+['P','Las tres primitivas básicas de la robótica son:','Sensar, planificar y actuar','Percibir, razonar y comunicar','Mover, medir y controlar','Modelar, simular y ejecutar',''],
+['P','La primitiva que construye un modelo del mundo y determina las acciones a realizar es:','Planificar (PLAN)','Sensar (SENSE)','Actuar (ACT)','Comunicar','Sensar recolecta información; actuar ejecuta y supervisa.'],
+['P','Paradigma en el que las primitivas se encadenan en el orden SENSE-PLAN-ACT:','Jerárquico (deliberativo)','Reactivo','Híbrido','De subsunción',''],
+['P','Shakey, considerado el primer robot móvil autónomo con IA, utilizaba el paradigma:','Jerárquico','Reactivo','Híbrido','De subsunción',''],
+['P','Supuesto de que el modelo del mundo contiene todo lo que el robot necesita saber:','Closed World Assumption','Open World Assumption','Comportamiento emergente','Subsunción','Si no se cumple, el robot no puede realizar la tarea.'],
+['P','Una limitación del paradigma jerárquico es que:','Un fallo en cualquier módulo provoca un fallo total del sistema','Elimina la fase de planificación','No usa un modelo del mundo','Responde sin usar sensores',''],
+['P','Paradigma que elimina por completo la fase de planificación, quedando solo SENSE y ACT:','Reactivo','Jerárquico','Híbrido','Deliberativo','Surgió a finales de los años 80.'],
+['P','La descomposición vertical se asocia a los sistemas:','Reactivos','Jerárquicos','Deliberativos','Monolíticos','La horizontal fue propuesta en los sistemas jerárquicos.'],
+['P','Comportamiento que resulta de combinar o seleccionar las salidas de varios comportamientos básicos, sin controlador central:','Comportamiento emergente','Comportamiento innato','Comportamiento aprendido','Esquema sensorial',''],
+['P','Comportamiento que consiste en estímulo-respuesta sin cognición:','Reflexivo','Consciente','Aprendido','Innato','Consciente es deliberado y con razonamiento.'],
+['P','La abeja que ubica su colmena haciendo viajes cortos desde distintos ángulos ilustra un comportamiento:','Innato con memoria','Innato','Secuencia innata','Aprendido','Aprendido: la caza en los leones. Secuencia innata: el apareamiento de las avispas.'],
+['P','Un comportamiento está formado por:','Un esquema sensorial y un esquema motor','Un sensor y un actuador','Un plan y un modelo del mundo','Un reactor y un deliberador',''],
+['P','En la arquitectura de subsunción, cuando la salida del módulo superior bloquea la salida del inferior (si está «On») ocurre:','Inhibición','Supresión','Secuenciación','Fusión',''],
+['P','En la subsunción, cuando la salida del módulo superior, si es distinta de cero, reemplaza a la del inferior ocurre:','Supresión','Inhibición','Emergencia','Planificación',''],
+['P','Las tres capas básicas de una arquitectura híbrida son:','Reactiva, intermedia y deliberativa','Sensorial, motora y de comunicación','Locomoción, percepción y razonamiento','Reactor, sensor y actuador',''],
+['P','En el paradigma híbrido, las primitivas se organizan en la forma:','Planificar, y luego sensar y actuar','Sensar, planificar y actuar','Solo sensar y actuar','Actuar, planificar y sensar',''],
+['P','La arquitectura híbrida con capa reactiva, intermedia y deliberativa también se denomina:','De tres capas (three-layer)','De subsunción','Jerárquica','De campos de potencial',''],
+['P','Elemento de la arquitectura híbrida que crea, almacena y mantiene el mapa:','Cartógrafo','Secuenciador','Planificador de misión','Manejador de recursos',''],
+['P','Elemento de la arquitectura híbrida que define la cadena de activación de los comportamientos:','Secuenciador','Cartógrafo','Monitoreo de rendimiento','Planificador de misión','El planificador de misión construye la estrategia para llegar al objetivo.'],
+['P','AuRA, SFX, 3T, Saphira y TCA son ejemplos de arquitecturas:','Híbridas','Reactivas','Deliberativas','Monolíticas','Subsunción es reactiva; RCS es deliberativa.'],
+['P','Genghis (años 80), con 12 motores, 6 sensores y AFSM, pertenece al paradigma:','Reactivo','Jerárquico','Híbrido','Deliberativo',''],
+['P','Un robot inteligente es una criatura mecánica que puede funcionar de forma:','Autónoma','Teleoperada','Secuencial','Cooperativa','Funcionar de forma autónoma es operar sin recurrir a un operador humano.'],
+];
+
+// ---------- utilidades
+const $app=document.getElementById('app');
+function rng(s){let h=1779033703^s.length;for(let i=0;i<s.length;i++){h=Math.imul(h^s.charCodeAt(i),3432918353);h=h<<13|h>>>19}let a=h;
+  return()=>{a|=0;a=a+0x6D2B79F5|0;let t=Math.imul(a^a>>>15,1|a);t=t+Math.imul(t^t>>>7,61|t)^t;return((t^t>>>14)>>>0)/4294967296}}
+function shuf(arr,r=Math.random){const a=arr.slice();for(let i=a.length-1;i>0;i--){const j=Math.floor(r()*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a}
+const KEY='simulacro-robotica-p1';
+let S={factor:2,topics:TOPICS.map(t=>t.k),best:{}};
+try{Object.assign(S,JSON.parse(localStorage.getItem(KEY))||{})}catch(e){}
+const persist=()=>{try{localStorage.setItem(KEY,JSON.stringify(S))}catch(e){}};
+const topicName=k=>TOPICS.find(t=>t.k===k).n;
+
+// 12 modelos fijos: cada pregunta del banco sale en un solo modelo; cada tema se reparte entre todos.
+const M=Math.floor(BANK.length/10);
+const LETTERS='ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+const flat=TOPICS.flatMap(t=>shuf(BANK.map((b,i)=>i).filter(i=>BANK[i][0]===t.k),rng('t'+t.k)));
+const MODELS=Array.from({length:M},(_,m)=>shuf(flat.filter((_,i)=>i%M===m),rng('m'+m)));
+
+function mkQs(ids,seed){
+  return ids.map(id=>{const b=BANK[id];
+    const opts=shuf([b[2],b[3],b[4],b[5]],seed?rng(seed+id):Math.random);
+    return{t:b[0],q:b[1],opts,c:opts.indexOf(b[2]),e:b[6]}});
+}
+
+// ---------- vistas
+let cur=null;
+
+function home(){
+  cur=null;
+  const n=S.topics.length;
+  $app.innerHTML=`
+  <section class="hero">
+    <span class="label">Robótica · Parcial 1</span>
+    <h1>Simulacro de examen</h1>
+    <p>Formato del profesor: 10 preguntas de selección simple, 4 opciones, 2 puntos cada una y factor de corrección por respuesta incorrecta. Salen todas las preguntas de tu resumen, repartidas en ${M} modelos.</p>
+  </section>
+  <div class="panel">
+    <div class="row">
+      <div><div class="label" style="margin-bottom:8px">Factor de corrección</div>
+        <div class="seg" role="group" aria-label="Factor de corrección">
+          <button data-act="factor" data-v="2" aria-pressed="${S.factor===2}">−2 pts</button>
+          <button data-act="factor" data-v="1" aria-pressed="${S.factor===1}">−1 pto</button>
+        </div></div>
+      <button class="btn primary" data-act="random" ${n?'':'disabled'}>Generar parcial aleatorio</button>
+    </div>
+    <div><div class="label" style="margin-bottom:8px">Temas del parcial aleatorio</div>
+      <div class="topics">${TOPICS.map(t=>`<label for="tp-${t.k}"><input type="checkbox" id="tp-${t.k}" data-act="topic" data-v="${t.k}" ${S.topics.includes(t.k)?'checked':''}>${t.n}</label>`).join('')}</div></div>
+  </div>
+  <h2>Modelos fijos</h2>
+  <div class="models">${MODELS.map((_,m)=>{const b=S.best[m];
+    return`<button class="model" data-act="model" data-v="${m}"><b>${LETTERS[m]}</b><small>Modelo ${LETTERS[m]} · ${MODELS[m].length} preguntas</small>
+    <span class="best ${b?'has':''}">${b?`mejor ${b.score}/${b.total} (−${b.factor})`:'sin intentar'}</span></button>`}).join('')}</div>`;
+  scrollTo(0,0);
+}
+
+function start(key,title,qs){
+  cur={key,title,qs,ans:qs.map(()=>null),conf:qs.map(()=>'s')};
+  $app.innerHTML=`
+  <div class="bar">
+    <button class="btn" data-act="home">Salir</button>
+    <div class="prog"><span id="pt"></span><i id="pb"></i></div>
+    <button class="btn primary" data-act="grade">Corregir parcial</button>
+  </div>
+  <article class="paper">
+    <header class="sheet-h"><small>Universidad Católica Andrés Bello</small><b>Robótica · Examen Parcial 1 · ${title}</b></header>
+    <ol class="qs">${qs.map((_,i)=>qHtml(i)).join('')}</ol>
+    <p class="note">2 ptos C/U. Para respuestas incorrectas el factor de corrección es −${S.factor} ${S.factor===1?'pto':'ptos'}.</p>
+  </article>`;
+  prog();scrollTo(0,0);
+}
+
+function qHtml(i){
+  const q=cur.qs[i],a=cur.ans[i],c=cur.conf[i];
+  return`<li class="q" id="q${i}"><p class="qt"><span class="qn">${i+1}.</span><span>${q.q}</span></p>
+  <div class="opts">${q.opts.map((o,j)=>`<button class="opt${a===j?' on':''}" data-act="pick" data-i="${i}" data-j="${j}" aria-pressed="${a===j}"><span class="n">[ ${j+1} ]</span><span>${o}</span></button>`).join('')}</div>
+  <div class="conf">
+    <button class="chip${a!=null&&c==='s'?' on':''}" data-act="conf" data-i="${i}" data-v="s">Seguro</button>
+    <button class="chip d${a!=null&&c==='d'?' on':''}" data-act="conf" data-i="${i}" data-v="d">Dudo</button>
+    <button class="chip${a==null?' on':''}" data-act="blank" data-i="${i}">Dejar en blanco</button>
+  </div></li>`;
+}
+function redraw(i){document.getElementById('q'+i).outerHTML=qHtml(i);prog()}
+function prog(){const n=cur.ans.filter(a=>a!=null).length,t=cur.qs.length;
+  document.getElementById('pt').textContent=`${n}/${t} respondidas · ${t-n} en blanco`;
+  document.getElementById('pb').style.setProperty('--w',(n/t*100)+'%')}
+
+function grade(){
+  const f=S.factor,qs=cur.qs;
+  let ok=0,bad=0,blank=0,dNet=0;const sure={n:0,ok:0},doubt={n:0,ok:0},miss={};
+  qs.forEach((q,i)=>{const a=cur.ans[i];if(a==null){blank++;return}
+    const hit=a===q.c,g=cur.conf[i]==='d'?doubt:sure;
+    hit?ok++:(bad++,miss[q.t]=(miss[q.t]||0)+1);g.n++;if(hit)g.ok++;
+    if(cur.conf[i]==='d')dNet+=hit?2:-f});
+  const total=qs.length*2,score=2*ok-f*bad;
+  if(typeof cur.key==='number'){const b=S.best[cur.key];if(!b||score>b.score){S.best[cur.key]={score,total,factor:f};persist()}}
+  const th=Math.round(f/(2+f)*100);
+  const pct=g=>g.n?Math.round(g.ok/g.n*100)+' %':'—';
+  let verdict;
+  if(!doubt.n)verdict=`<div class="callout good">No marcaste ninguna como «Dudo». Revisa abajo cuáles de tus «Seguro» fallaron.</div>`;
+  else if(dNet>0)verdict=`<div class="callout good">Arriesgar en las dudosas te sumó +${dNet} pts. Con tu nivel de acierto en ellas (${pct(doubt)}) valió la pena.</div>`;
+  else if(dNet<0)verdict=`<div class="callout">Dejar en blanco las dudosas te habría dado +${-dNet} pts: tu nota habría sido ${score-dNet}/${total} en vez de ${score}/${total}.</div>`;
+  else verdict=`<div class="callout">Arriesgar y dejar en blanco las dudosas daba lo mismo en este intento.</div>`;
+  const weak=Object.entries(miss).sort((a,b)=>b[1]-a[1]).map(([k,n])=>`${topicName(k)} (${n})`).join(', ');
+  $app.innerHTML=`
+  <div class="bar"><button class="btn" data-act="home">Inicio</button>
+    <button class="btn primary" data-act="again">${typeof cur.key==='number'?'Repetir '+cur.title:'Otro parcial aleatorio'}</button></div>
+  <div class="panel score">
+    <span class="label">${cur.title} · factor −${f}</span>
+    <div class="big">${score}<small> / ${total}</small></div>
+    <div class="tiles">
+      <div class="tile ok"><b>${ok}</b><small>correctas · +${ok*2}</small></div>
+      <div class="tile bad"><b>${bad}</b><small>incorrectas · −${bad*f}</small></div>
+      <div class="tile"><b>${blank}</b><small>en blanco · 0</small></div>
+    </div>
+    <div class="risk">
+      <h3>¿Arriesgar o dejar en blanco?</h3>
+      <p>Acertaste ${sure.ok} de ${sure.n} marcadas «Seguro» (${pct(sure)}) y ${doubt.ok} de ${doubt.n} marcadas «Dudo» (${pct(doubt)}).</p>
+      ${verdict}
+      <p>Con factor −${f} te conviene responder solo si estás al menos ${th} % seguro, o si puedes descartar opciones hasta llegar a ese punto. Adivinar a ciegas entre 4 opciones da en promedio ${(0.5-0.75*f).toFixed(2).replace('.',',')} pts por pregunta.</p>
+      ${weak?`<p><b>Repasa:</b> ${weak}.</p>`:''}
+    </div>
+  </div>
+  <h2>Revisión</h2>
+  <div>${qs.map((q,i)=>review(q,i)).join('')}</div>`;
+  scrollTo(0,0);
+}
+function review(q,i){
+  const a=cur.ans[i],st=a==null?['blank','En blanco']:a===q.c?['ok','Correcta']:['bad','Incorrecta'];
+  return`<div class="rv"><div class="rv-h"><b class="mono">${i+1}.</b><span class="st ${st[0]}">${st[1]}</span><span class="tag">${topicName(q.t)}</span></div>
+  <div>${q.q}</div>
+  <div class="opts" style="padding-left:0">${q.opts.map((o,j)=>`<div class="ro${j===q.c?' right':j===a?' wrong':''}"><span class="n">[ ${j+1} ]</span><span>${o}${j===q.c?' ✓':j===a?' (tu respuesta)':''}</span></div>`).join('')}</div>
+  ${q.e?`<p class="why">${q.e}</p>`:''}</div>`;
+}
+
+function randomExam(){
+  const pool=BANK.map((b,i)=>i).filter(i=>S.topics.includes(BANK[i][0]));
+  start('r','Parcial aleatorio',mkQs(shuf(pool).slice(0,10)));
+}
+
+// ---------- eventos
+$app.addEventListener('click',e=>{
+  const el=e.target.closest('[data-act]');if(!el)return;
+  const act=el.dataset.act,i=+el.dataset.i,v=el.dataset.v;
+  if(act==='factor'){S.factor=+v;persist();home()}
+  else if(act==='topic'){S.topics=el.checked?[...S.topics,v]:S.topics.filter(k=>k!==v);persist();
+    document.querySelector('[data-act="random"]').disabled=!S.topics.length}
+  else if(act==='random')randomExam();
+  else if(act==='model'){const m=+v;start(m,'Modelo '+LETTERS[m],mkQs(MODELS[m],'o'+m+'-'))}
+  else if(act==='home')home();
+  else if(act==='again'){if(typeof cur.key==='number')start(cur.key,cur.title,mkQs(MODELS[cur.key],'o'+cur.key+'-'));else randomExam()}
+  else if(act==='pick'){const j=+el.dataset.j;cur.ans[i]=cur.ans[i]===j?null:j;redraw(i)}
+  else if(act==='conf'){cur.conf[i]=v;redraw(i)}
+  else if(act==='blank'){cur.ans[i]=null;redraw(i)}
+  else if(act==='grade')grade();
+});
+home();
+</script>
+</body>
+</html>
