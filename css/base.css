@@ -1,0 +1,48 @@
+/* Reset, tipografía y estructura de la página. */
+*, *::before, *::after { box-sizing: border-box; }
+html { -webkit-text-size-adjust: 100%; }
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--ink);
+  font: 16px/1.5 var(--f-body);
+}
+.wrap {
+  max-width: 880px;
+  margin: 0 auto;
+  padding-block: 20px 64px;
+  padding-left: max(16px, env(safe-area-inset-left, 0px));
+  padding-right: max(16px, env(safe-area-inset-right, 0px));
+}
+h1, h2, h3 { font-family: var(--f-display); margin: 0; line-height: 1.15; text-wrap: balance; }
+h1 { font-size: clamp(1.6rem, 4vw, 2.2rem); letter-spacing: -.01em; }
+h2 { font-size: 1.35rem; }
+h3 { font-size: 1.05rem; }
+p { margin: 0; }
+button, select, input { font: inherit; color: inherit; }
+button { cursor: pointer; }
+:focus-visible { outline: 3px solid var(--accent); outline-offset: 2px; border-radius: 4px; }
+
+.mono { font-family: var(--f-mono); font-variant-numeric: tabular-nums; }
+.muted { color: var(--muted); }
+.eyebrow { font: 500 .72rem var(--f-mono); letter-spacing: .08em; text-transform: uppercase; color: var(--muted); }
+.row { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; }
+.row.between { justify-content: space-between; }
+.stack { display: flex; flex-direction: column; gap: 16px; }
+.lead { color: var(--muted); max-width: 66ch; }
+.empty { padding: 28px; text-align: center; color: var(--muted); }
+
+header.top { display: flex; flex-wrap: wrap; align-items: flex-end; justify-content: space-between; gap: 12px 24px; margin-bottom: 18px; }
+header.top .sub { color: var(--muted); margin-top: 6px; max-width: 62ch; }
+.legend { font: .78rem var(--f-mono); color: var(--muted); text-align: right; }
+.legend b { color: var(--ink); }
+
+nav.modes { display: flex; gap: 4px; overflow-x: auto; border-bottom: 1px solid var(--line); margin-bottom: 20px; scrollbar-width: none; }
+nav.modes button {
+  flex: 0 0 auto; background: none; border: 0; border-bottom: 3px solid transparent;
+  color: var(--muted); font-weight: 600; font-size: .95rem; padding: 10px 12px;
+}
+nav.modes button:hover { color: var(--ink); }
+nav.modes button[aria-selected="true"] { color: var(--ink); border-bottom-color: var(--accent); }
+
+@media (prefers-reduced-motion: reduce) { * { transition: none !important; } }
