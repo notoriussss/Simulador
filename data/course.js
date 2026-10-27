@@ -17,6 +17,7 @@ window.Sim = window.Sim || {};
     howAsk: [
       ['Definición → nombre.', 'Copia una frase casi textual de la lámina y pide el término («Mide la probabilidad de…», «Razonamiento que va de lo particular a lo general»). Lee las definiciones de las láminas como si fueran enunciados.'],
       ['Distractores del mismo tema.', 'Las cuatro opciones suelen salir de la misma lista. Aquí: los tipos de rueda, los arreglos de ruedas, los paradigmas, los elementos del híbrido. Tienes que saber la lista completa y qué la distingue.'],
+      ['Bloques con las mismas opciones.', 'Pone entre 2 y 4 preguntas seguidas que comparten las mismas 4 opciones y cada una tiene una respuesta distinta. Hay que saber a cuál de las cuatro corresponde cada definición, no solo reconocer una. Se entrenan con «Solo bloques de opciones compartidas» en Práctica.'],
       ['Distractores que suenan reales.', 'En sus otros parciales mezcla términos inventados o que no vimos con los reales. Si un término no lo viste nunca en clase, sospecha.'],
       ['Las definiciones centrales se repiten.', 'Las mismas preguntas vuelven casi idénticas entre parciales. Las definiciones de autor, las leyes de Asimov y la lista de sensores son candidatas.'],
       ['Cifras y nombres propios.', 'Años, autores y datos numéricos (2 cm a 5 m, 24 satélites, 120°, 1 a 2°) aparecen como opción única. Se estudian con las tablas de Contrastes.'],

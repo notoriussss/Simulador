@@ -19,6 +19,7 @@
         <button class="btn primary" id="mix">Mezclar todo (20 preguntas)</button>
         <button class="btn" id="traps">Solo casi sinónimos y alias</button>
         <button class="btn" id="data">Solo datos y cifras</button>
+        <button class="btn" id="sets">Solo bloques de opciones compartidas</button>
         <button class="btn" id="unseen">Solo las que nunca vi</button>
       </div>
     </section>`);
@@ -27,6 +28,7 @@
     v.querySelector('#mix').onclick = () => start(S.shuffle(S.bank).slice(0, 20).map((q) => q.id), 'Mezcla');
     v.querySelector('#traps').onclick = () => start(ids((q) => q.s === 'casi' || q.s === 'alias'), 'Casi sinónimos y alias');
     v.querySelector('#data').onclick = () => start(ids((q) => q.s === 'dato'), 'Datos y cifras');
+    v.querySelector('#sets').onclick = () => start(ids((q) => q.set), 'Bloques de opciones compartidas');
     v.querySelector('#unseen').onclick = () => {
       const u = ids((q) => !S.stats[q.id]);
       u.length ? start(u, 'Nunca vistas') : S.flash(v, 'Ya viste todas las preguntas. Prueba con «Mis errores».');
@@ -35,7 +37,8 @@
   }
 
   function start(ids, label) {
-    prac = { label, items: S.shuffle(ids).map((id) => S.inst(S.bank[id])), i: 0, ok: 0, answered: false };
+    // Los bloques de opciones compartidas se mantienen juntos y con las mismas opciones, como en el parcial.
+    prac = { label, items: S.arrange(S.units(ids.map((id) => S.bank[id]))), i: 0, ok: 0, answered: false };
     S.go('prac');
   }
 

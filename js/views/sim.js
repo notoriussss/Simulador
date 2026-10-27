@@ -2,6 +2,7 @@
 (function (S) {
   const { el, esc } = S;
   const LETTERS = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+  const label = (m) => (m < LETTERS.length ? LETTERS[m] : String(m + 1)); // A–Z y luego 27, 28…
   const penText = (p) => `Para respuestas incorrectas el factor de corrección es −${p} pto${p > 1 ? 's' : ''}.`;
   let sim = null; // { name, model, pen, items, done }
 
@@ -22,16 +23,16 @@
         <div><h3>Modelos fijos</h3>
           <p class="muted" style="margin-top:4px">Cada pregunta del banco sale en un solo modelo, así que los ${models.length} modelos juntos cubren todo el temario. Siempre salen las mismas preguntas, para repetir un modelo después de estudiar y comparar tu nota.</p></div>
         <div class="models">${models.map((_, m) => {
-          const best = S.store.get('best-' + LETTERS[m], null);
-          return `<button class="model" data-m="${m}"><b>${LETTERS[m]}</b><span class="mono ${best == null ? '' : 'has'}">${best == null ? 'sin intentar' : 'mejor ' + best + '/20'}</span></button>`;
+          const best = S.store.get('best-' + label(m), null);
+          return `<button class="model" data-m="${m}"><b>${label(m)}</b><span class="mono ${best == null ? '' : 'has'}">${best == null ? 'sin intentar' : 'mejor ' + best + '/20'}</span></button>`;
         }).join('')}</div>
       </section>
     </div>`);
     v.querySelectorAll('[data-pen]').forEach((b) => (b.onclick = () => { S.prefs.pen = +b.dataset.pen; S.savePrefs(); S.refresh(); }));
-    v.querySelector('#rnd').onclick = () => start('Aleatorio', null, S.build(S.randomExam(S.bank)));
+    v.querySelector('#rnd').onclick = () => start('Aleatorio', null, S.arrange(S.randomExam(S.bank)));
     v.querySelectorAll('.model').forEach((b) => (b.onclick = () => {
       const m = +b.dataset.m;
-      start(LETTERS[m], m, S.build(models[m], 'm' + m + '-'));
+      start(label(m), m, S.arrange(models[m], 'm' + m + '-'));
     }));
     app.appendChild(v);
   }
@@ -153,7 +154,7 @@
     p.querySelectorAll('[data-t]').forEach((b) => (b.onclick = () => S.practice.start(S.bank.filter((q) => q.t === b.dataset.t).map((q) => q.id), S.topicName(b.dataset.t))));
     p.querySelector('#again').onclick = () => { sim = null; S.refresh(); };
     const redo = p.querySelector('#redo');
-    if (redo) redo.onclick = () => start(sim.name, sim.model, S.build(S.models(S.bank)[sim.model], 'm' + sim.model + '-'));
+    if (redo) redo.onclick = () => start(sim.name, sim.model, S.arrange(S.models(S.bank)[sim.model], 'm' + sim.model + '-'));
     return p;
   }
 

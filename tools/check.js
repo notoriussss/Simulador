@@ -43,14 +43,48 @@ S.contrasts.forEach((c) => {
   c.rows.forEach((r) => { if (r.length !== c.cols.length) errors.push(`tabla ${c.g}: una fila tiene ${r.length} columnas y el encabezado ${c.cols.length}`); });
 });
 
+/* Bloques de opciones compartidas: de 2 a 4 preguntas, mismas 4 opciones, una correcta distinta por pregunta, mismo tema. */
+const blocks = {};
+S.bank.filter((q) => q.set).forEach((q) => (blocks[q.set] = blocks[q.set] || []).push(q));
+Object.entries(blocks).forEach(([id, qs]) => {
+  if (qs.length < 2 || qs.length > 4) errors.push(`bloque ${id}: tiene ${qs.length} preguntas (debe tener de 2 a 4)`);
+  if (new Set(qs.map((q) => q.t)).size !== 1) errors.push(`bloque ${id}: mezcla temas`);
+  if (new Set(qs.map((q) => q.a)).size !== qs.length) errors.push(`bloque ${id}: dos preguntas tienen la misma respuesta correcta`);
+  const names = [...S.sets[id]].sort().join('|');
+  qs.forEach((q) => {
+    if ([q.a, ...q.d.map((d) => d.o)].sort().join('|') !== names) errors.push(`bloque ${id}: la pregunta #${q.id} no usa las mismas opciones`);
+  });
+  const ids = qs.map((q) => q.id);
+  if (ids[ids.length - 1] - ids[0] !== ids.length - 1) errors.push(`bloque ${id}: sus preguntas no están seguidas en el banco`);
+});
+
 const N = S.bank.length;
 if (N % S.PER_EXAM) errors.push(`el banco tiene ${N} preguntas; para que cada modelo tenga ${S.PER_EXAM} debe ser múltiplo de ${S.PER_EXAM}`);
 
 const models = S.models(S.bank);
-const used = models.flat().map((q) => q.id);
+const flat = models.map((units) => units.flat());
+const used = flat.flat().map((q) => q.id);
 if (new Set(used).size !== used.length) errors.push('una pregunta sale en más de un modelo');
 if (used.length !== N) errors.push(`los modelos cubren ${used.length} de ${N} preguntas`);
-models.forEach((m, i) => { if (m.length !== S.PER_EXAM) errors.push(`el modelo ${i} tiene ${m.length} preguntas`); });
+flat.forEach((m, i) => { if (m.length !== S.PER_EXAM) errors.push(`el modelo ${i} tiene ${m.length} preguntas`); });
+
+/* En cada modelo armado, las preguntas de un bloque salen seguidas y con las opciones en el mismo orden. */
+models.forEach((units, mi) => {
+  const items = S.arrange(units, 'm' + mi + '-');
+  Object.keys(blocks).forEach((id) => {
+    const at = items.map((it, k) => (it.q.set === id ? k : -1)).filter((k) => k >= 0);
+    if (!at.length) return;
+    if (at[at.length - 1] - at[0] !== at.length - 1) errors.push(`modelo ${mi}: el bloque ${id} no sale seguido`);
+    const order = (k) => items[k].opts.map((o) => o.o).join('|');
+    if (at.some((k) => order(k) !== order(at[0]))) errors.push(`modelo ${mi}: el bloque ${id} no mantiene el orden de opciones`);
+  });
+});
+
+/* Parcial aleatorio: siempre 10 preguntas exactas. */
+for (let i = 0; i < 300; i++) {
+  const n = S.randomExam(S.bank).flat().length;
+  if (n !== S.PER_EXAM) { errors.push(`un parcial aleatorio salió con ${n} preguntas`); break; }
+}
 
 if (errors.length) {
   console.error(errors.length + ' errores:\n  ' + errors.join('\n  '));
@@ -61,11 +95,15 @@ const by = {};
 S.bank.forEach((q) => (by[q.t] = (by[q.t] || 0) + 1));
 const st = {};
 S.bank.forEach((q) => (st[q.s] = (st[q.s] || 0) + 1));
+const sizes = {};
+Object.values(blocks).forEach((qs) => (sizes[qs.length] = (sizes[qs.length] || 0) + 1));
+const withBlock = flat.filter((m) => m.some((q) => q.set)).length;
 console.log(`OK · ${N} preguntas · ${models.length} modelos · ${S.contrasts.length} tablas de contraste`);
 console.log('Por tema:  ', S.topics.map((t) => `${t.k}:${by[t.k]}`).join(' '));
 console.log('Por estilo:', Object.entries(st).map(([k, v]) => `${k}:${v}`).join(' '));
+console.log(`Bloques: ${Object.keys(blocks).length} (de 2: ${sizes[2] || 0}, de 3: ${sizes[3] || 0}, de 4: ${sizes[4] || 0}) · modelos con algún bloque: ${withBlock}/${models.length}`);
 
 /* Posición de la respuesta correcta en los modelos: debería repartirse, no concentrarse. */
 const pos = [0, 0, 0, 0];
-models.forEach((m, mi) => S.build(m, 'm' + mi + '-').forEach((it) => pos[it.opts.findIndex((o) => o.ok)]++));
+models.forEach((units, mi) => S.arrange(units, 'm' + mi + '-').forEach((it) => pos[it.opts.findIndex((o) => o.ok)]++));
 console.log('Posición de la correcta en modelos (1..4):', pos.join(' '));
