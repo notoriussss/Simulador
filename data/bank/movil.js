@@ -156,4 +156,11 @@ Sim.add('MV', [
     ['Una pata a la vez', 'No es la secuencia de la lámina.'],
     ['Las seis patas juntas', 'No habría apoyo.'],
     'ROB-03 · Robots con seis patas'],
+  // Sinónimos y alias
+  ['alias', 'sinonimos', 'Los robots ápodos, sin partes móviles diferenciadas del tronco, se asocian con la robótica:', 'Modular reconfigurable',
+    'Imitan serpientes, gusanos o caracoles y usan su propio tronco central para desplazarse.',
+    ['Industrial', 'Es la de manipuladores para automatización.'],
+    ['Teleoperada', 'Se refiere a operarlos a distancia.'],
+    ['Híbrida', 'Es la de móviles con manipulación.'],
+    'ROB-03 · Robots sin patas'],
 ]);

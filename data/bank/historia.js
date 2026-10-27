@@ -180,4 +180,11 @@ Sim.add('HI', [
     ['El control numérico', 'No tiene relación con Asimo.'],
     ['La manufactura', 'No es lo que dice la lámina.'],
     'ROB-03 · Un poco de historia'],
+  // Sinónimos y alias
+  ['alias', 'sinonimos', 'El SSRMS, sistema manipulador de la estación espacial (2001), se ilustra en la lámina con el:', 'Canadarm2',
+    'La lámina de cronología muestra al Canadarm2 junto al SSRMS.',
+    ['Robomow RL500', 'Es el cortacésped robótico de 2000.'],
+    ['PUMA', 'Es el robot de 1978.'],
+    ['AIBO', 'Es el robot de entretenimiento de Sony.'],
+    'ROB-02 · Cronología'],
 ]);

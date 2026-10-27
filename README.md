@@ -12,10 +12,10 @@ Descomprime la carpeta y abre `index.html` con doble clic. No necesita instalar 
 
 | Modo | Para qué sirve |
 |---|---|
-| **Simulacro** | Parcial de 10 preguntas con Seguro / Dudo / Dejar en blanco. Al corregir te dice si te convenía arriesgar. Hay 20 modelos fijos (A–T) que juntos cubren las 200 preguntas sin repetir, y un generador aleatorio. |
+| **Simulacro** | Parcial de 10 preguntas con Seguro / Dudo / Dejar en blanco. Al corregir te dice si te convenía arriesgar. Hay 22 modelos fijos (A–V) que juntos cubren las 220 preguntas sin repetir, y un generador aleatorio. |
 | **Práctica por tema** | Respondes y ves la explicación al instante. Barras de dominio por tema (acertada 2 veces seguidas = dominada). |
 | **Mis errores** | Repite lo que fallaste, con las opciones en otro orden, hasta acertarlo 2 veces seguidas. |
-| **Contrastes** | 31 tablas con los términos que se confunden (arreglos de ruedas, paradigmas, cronología, sensores…), cada una con su botón para ponerte a prueba. |
+| **Contrastes** | 32 tablas con los términos que se confunden (sinónimos y alias, arreglos de ruedas, paradigmas, cronología, sensores…), cada una con su botón para ponerte a prueba. |
 | **Cómo estudiar** | Método, tabla de cuándo arriesgar y el patrón de preguntas del profesor. |
 
 Cada error muestra por qué la opción elegida no era, por qué no son las otras y de qué lámina sale.

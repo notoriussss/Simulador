@@ -145,4 +145,17 @@ Sim.add('DF', [
     ['Vehículos autónomos', 'Son vehículos sin conductor, no plantas.'],
     ['Telepresencia', 'Aparece en usos y ventajas, no como tendencia de fábricas.'],
     'ROB-02 · Tendencias'],
+  // Sinónimos y alias
+  ['alias', 'sinonimos', 'El tipo de control «trayectoria operada» se llama también:', 'Trayectoria continua',
+    'La lámina escribe «Trayectoria operada/continua».',
+    ['Secuencia controlada', 'Solo exige un orden determinado de movimientos.'],
+    ['Control adaptativo', 'Ajusta parámetros con sensores o aprendizaje.'],
+    ['Control teleoperado', 'Lo opera un humano a distancia.'],
+    'ROB-02 · Según el tipo de control'],
+  ['alias', 'sinonimos', 'Los robots manipuladores se conocen también, de forma coloquial, como:', 'Brazos',
+    'La lámina de categorías escribe «Robots manipuladores (brazos)».',
+    ['Móviles', 'Son otra categoría: se desplazan.'],
+    ['Híbridos', 'Son móviles con manipulación.'],
+    ['Ápodos', 'Son robots sin patas.'],
+    'ROB-02 · Categorías'],
 ]);
