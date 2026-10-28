@@ -17,8 +17,11 @@
 
   S.metaChips = (q) => {
     const trap = q.s === 'casi' || q.s === 'alias';
-    return `<div class="chips"><span class="chip">${esc(S.topicName(q.t))}</span>` +
-      `<span class="chip${trap ? ' trap' : ''}">${esc(S.styles[q.s])}</span></div>`;
+    const chips = [`<span class="chip">${esc(S.topicName(q.t))}</span>`,
+      `<span class="chip${trap ? ' trap' : ''}">${esc(S.styles[q.s])}</span>`];
+    if (q.set) chips.push('<span class="chip">Bloque de opciones compartidas</span>');
+    if (q.x) chips.push(`<span class="chip extra">${esc((S.course.xChip && S.course.xChip[q.t]) || S.course.xChipDefault || 'Extra')}</span>`);
+    return `<div class="chips">${chips.join('')}</div>`;
   };
 
   /* pen = null en práctica (no hay puntos). */
@@ -30,7 +33,7 @@
     let verdict, cls;
     if (blank) { verdict = pen != null ? 'En blanco · 0 pts' : 'Sin responder'; cls = 'blank'; }
     else if (ok) { verdict = pen != null ? 'Correcta · +2 pts' : 'Correcta'; cls = 'ok'; }
-    else { verdict = pen != null ? `Incorrecta · −${pen} pts` : 'Incorrecta'; cls = 'bad'; }
+    else { verdict = pen != null ? (pen ? `Incorrecta · −${pen} pts` : 'Incorrecta · 0 pts') : 'Incorrecta'; cls = 'bad'; }
 
     const mine = !blank && !ok
       ? `<div><b>Por qué no era [ ${it.choice + 1} ] ${esc(it.opts[it.choice].o)}:</b> ${esc(it.opts[it.choice].n)}</div>` : '';

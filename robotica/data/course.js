@@ -3,7 +3,9 @@ window.Sim = window.Sim || {};
 
 (function (S) {
   S.course = {
+    key: 'robotica-p1', // prefijo del progreso guardado en el navegador
     title: 'Simulacro de Robótica',
+    docTitle: 'Simulacro Robótica · Parcial 1',
     eyebrow: 'UCAB · Robótica · Parcial 1',
     sub: 'Preguntas al estilo del profesor sobre ROB-02, ROB-03 y ROB-04. Cada error te muestra por qué la opción que elegiste no era, con la lámina de donde sale.',
     uni: 'Universidad Católica Andrés Bello',

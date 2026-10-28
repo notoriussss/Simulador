@@ -1,40 +1,40 @@
 /* Paleta y tipografía. Claro por defecto; oscuro con prefers-color-scheme o data-theme="dark". */
 :root {
-  --bg: #eef1f6;
+  --bg: #e9edf3;
   --paper: #ffffff;
   --soft: #f3f6fa;
-  --ink: #101a30;
-  --muted: #566178;
-  --line: #d3dae6;
+  --ink: #18202c;
+  --muted: #5a6575;
+  --line: #d3dae4;
 
-  --accent: #1f4fd8;
+  --accent: #1e4fa3;
   --accent-ink: #ffffff;
-  --accent-soft: #e4ebff;
+  --accent-soft: #e3ebf8;
 
-  --ok: #17803d;
-  --ok-soft: #e1f3e7;
-  --bad: #b42318;
-  --bad-soft: #fcebe9;
-  --doubt: #8a5200;
-  --doubt-soft: #fff0d0;
+  --ok: #1d7f48;
+  --ok-soft: #e2f3e9;
+  --bad: #b8322a;
+  --bad-soft: #f9e4e2;
+  --doubt: #a06a00;
+  --doubt-soft: #fbf0d9;
 
   --f-display: 'Bricolage Grotesque', 'Segoe UI', system-ui, sans-serif;
-  --f-body: 'IBM Plex Sans', 'Segoe UI', system-ui, sans-serif;
-  --f-mono: 'IBM Plex Mono', ui-monospace, Consolas, monospace;
+  --f-body: 'Atkinson Hyperlegible', 'Segoe UI', system-ui, sans-serif;
+  --f-mono: 'JetBrains Mono', ui-monospace, Consolas, monospace;
   --r: 10px;
 }
 
 @media (prefers-color-scheme: dark) {
   :root:not([data-theme="light"]) {
-    --bg: #0b1222; --paper: #131c32; --soft: #19233d; --ink: #e7ecf8; --muted: #9aa7c4; --line: #27334f;
-    --accent: #86a8ff; --accent-ink: #0b1222; --accent-soft: #1b2a54;
-    --ok: #62d28d; --ok-soft: #123020; --bad: #ff8f85; --bad-soft: #3b1815; --doubt: #f2bd5e; --doubt-soft: #382b0e;
+    --bg: #0e131b; --paper: #161d28; --soft: #1c2533; --ink: #e4e9f1; --muted: #97a2b3; --line: #2a3443;
+    --accent: #7ea4ff; --accent-ink: #0e131b; --accent-soft: #1e2b44;
+    --ok: #55c486; --ok-soft: #163224; --bad: #ff7b70; --bad-soft: #3a1c1a; --doubt: #f0bf52; --doubt-soft: #382c12;
     color-scheme: dark;
   }
 }
 :root[data-theme="dark"] {
-  --bg: #0b1222; --paper: #131c32; --soft: #19233d; --ink: #e7ecf8; --muted: #9aa7c4; --line: #27334f;
-  --accent: #86a8ff; --accent-ink: #0b1222; --accent-soft: #1b2a54;
-  --ok: #62d28d; --ok-soft: #123020; --bad: #ff8f85; --bad-soft: #3b1815; --doubt: #f2bd5e; --doubt-soft: #382b0e;
+  --bg: #0e131b; --paper: #161d28; --soft: #1c2533; --ink: #e4e9f1; --muted: #97a2b3; --line: #2a3443;
+  --accent: #7ea4ff; --accent-ink: #0e131b; --accent-soft: #1e2b44;
+  --ok: #55c486; --ok-soft: #163224; --bad: #ff7b70; --bad-soft: #3a1c1a; --doubt: #f0bf52; --doubt-soft: #382c12;
   color-scheme: dark;
 }

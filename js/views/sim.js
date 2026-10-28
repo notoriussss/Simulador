@@ -3,33 +3,36 @@
   const { el, esc } = S;
   const LETTERS = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
   const label = (m) => (m < LETTERS.length ? LETTERS[m] : String(m + 1)); // A–Z y luego 27, 28…
-  const penText = (p) => `Para respuestas incorrectas el factor de corrección es −${p} pto${p > 1 ? 's' : ''}.`;
+  const penText = (p) => (p === 0 ? 'Sin factor de corrección.' : `Para respuestas incorrectas el factor de corrección es −${p} pto${p > 1 ? 's' : ''}.`);
   let sim = null; // { name, model, pen, items, done }
 
   function setup(app) {
-    const models = S.models(S.bank);
+    const pool = S.pool(S.prefs.extra);
+    const models = S.models(pool);
     const v = el(`<div class="stack">
       <section class="sheet stack">
         <div><h2>Simulacro de ${S.PER_EXAM} preguntas</h2><p class="lead" style="margin-top:6px">${esc(S.course.simIntro)}</p></div>
         <div class="field"><span class="lbl">Factor de corrección</span>
           <div class="seg" role="group" aria-label="Factor de corrección">
-            ${S.course.pens.map((p) => `<button data-pen="${p}" aria-pressed="${S.prefs.pen === p}">−${p} ${p > 1 ? 'pts' : 'pto'}</button>`).join('')}
+            ${S.course.pens.map((p) => `<button data-pen="${p}" aria-pressed="${S.prefs.pen === p}">${p === 0 ? 'Sin resta' : '−' + p + (p > 1 ? ' pts' : ' pto')}</button>`).join('')}
           </div>
           <span class="muted" style="font-size:.82rem">${esc(S.course.penNote)}</span>
         </div>
+        ${S.course.extraLabel ? `<div class="field"><span class="lbl">Temario</span><label class="check"><input type="checkbox" id="opt-extra" ${S.prefs.extra ? 'checked' : ''}> ${esc(S.course.extraLabel)}</label></div>` : ''}
         <div class="row"><button class="btn primary" id="rnd">Generar parcial aleatorio</button></div>
       </section>
       <section class="stack">
         <div><h3>Modelos fijos</h3>
           <p class="muted" style="margin-top:4px">Cada pregunta del banco sale en un solo modelo, así que los ${models.length} modelos juntos cubren todo el temario. Siempre salen las mismas preguntas, para repetir un modelo después de estudiar y comparar tu nota.</p></div>
         <div class="models">${models.map((_, m) => {
-          const best = S.store.get('best-' + label(m), null);
+          const best = S.store.get('best-' + label(m) + (S.prefs.extra ? 'x' : ''), null);
           return `<button class="model" data-m="${m}"><b>${label(m)}</b><span class="mono ${best == null ? '' : 'has'}">${best == null ? 'sin intentar' : 'mejor ' + best + '/20'}</span></button>`;
         }).join('')}</div>
       </section>
     </div>`);
     v.querySelectorAll('[data-pen]').forEach((b) => (b.onclick = () => { S.prefs.pen = +b.dataset.pen; S.savePrefs(); S.refresh(); }));
-    v.querySelector('#rnd').onclick = () => start('Aleatorio', null, S.arrange(S.randomExam(S.bank)));
+    if (S.course.extraLabel) v.querySelector('#opt-extra').onchange = (e) => { S.prefs.extra = e.target.checked; S.savePrefs(); S.refresh(); };
+    v.querySelector('#rnd').onclick = () => start('Aleatorio', null, S.arrange(S.randomExam(pool)));
     v.querySelectorAll('.model').forEach((b) => (b.onclick = () => {
       const m = +b.dataset.m;
       start(label(m), m, S.arrange(models[m], 'm' + m + '-'));
@@ -38,7 +41,7 @@
   }
 
   function start(name, model, items) {
-    sim = { name, model, pen: S.prefs.pen, items, done: false };
+    sim = { name, model, pen: S.prefs.pen, extra: S.prefs.extra, items, done: false };
     S.refresh();
     window.scrollTo({ top: 0 });
   }
@@ -113,7 +116,7 @@
     sim.items.forEach((it) => { if (it.choice != null) S.record(it.q.id, it.opts[it.choice].ok); });
     const total = S.score(sim.items, sim.pen).total;
     if (sim.model != null) {
-      const k = 'best-' + sim.name;
+      const k = 'best-' + sim.name + (sim.extra ? 'x' : '');
       const b = S.store.get(k, null);
       if (b == null || total > b) S.store.set(k, total);
     }
@@ -124,6 +127,7 @@
   function advice(r, pen) {
     const pct = (x) => (x.n ? Math.round((100 * x.ok) / x.n) + '%' : '—');
     const be = Math.round((100 * pen) / (2 + pen));
+    if (pen === 0) return `Sin factor de corrección, una respuesta en blanco nunca suma. <b>Responde siempre</b>, aunque dudes. Cuando dudaste acertaste ${pct(r.doubt)}.`;
     if (!r.doubt.n) return 'No marcaste ninguna como <b>Dudo</b>. La próxima vez márcalas: así medimos si te conviene arriesgar.';
     if (r.ifBlankDoubt > r.total) return `Cuando dudaste acertaste ${pct(r.doubt)}. Con factor −${pen} necesitas más de ${be}% para que arriesgar sume. <b>Si hubieras dejado en blanco las dudosas sacabas ${r.ifBlankDoubt}/20 en vez de ${r.total}/20.</b>`;
     if (r.ifBlankDoubt === r.total) return `Cuando dudaste acertaste ${pct(r.doubt)}, justo donde arriesgar ni suma ni resta: ${r.total}/20 en ambos casos. <b>Con más dudas que aciertos, conviene dejar en blanco.</b>`;
@@ -141,7 +145,7 @@
         <div class="big">${r.total}<small>/20</small></div>
         <div class="kv">
           <div class="ok"><div class="k">Correctas</div><div class="v">${r.ok} · +${r.ok * 2}</div></div>
-          <div class="bad"><div class="k">Incorrectas</div><div class="v">${r.bad} · −${r.bad * pen}</div></div>
+          <div class="bad"><div class="k">Incorrectas</div><div class="v">${r.bad}${pen ? ' · −' + r.bad * pen : ''}</div></div>
           <div><div class="k">En blanco</div><div class="v">${r.blank}</div></div>
           <div class="doubt"><div class="k">Acierto si dudabas</div><div class="v">${pct(r.doubt)}</div></div>
           <div class="ok"><div class="k">Acierto si estabas seguro</div><div class="v">${pct(r.sure)}</div></div>
@@ -154,7 +158,7 @@
     p.querySelectorAll('[data-t]').forEach((b) => (b.onclick = () => S.practice.start(S.bank.filter((q) => q.t === b.dataset.t).map((q) => q.id), S.topicName(b.dataset.t))));
     p.querySelector('#again').onclick = () => { sim = null; S.refresh(); };
     const redo = p.querySelector('#redo');
-    if (redo) redo.onclick = () => start(sim.name, sim.model, S.arrange(S.models(S.bank)[sim.model], 'm' + sim.model + '-'));
+    if (redo) redo.onclick = () => start(sim.name, sim.model, S.arrange(S.models(S.pool(sim.extra))[sim.model], 'm' + sim.model + '-'));
     return p;
   }
 

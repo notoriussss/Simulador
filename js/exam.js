@@ -53,6 +53,7 @@
     blocks.forEach((b, i) => {
       let m = i % M;
       for (let k = 0; k < M && models[m].n + b.length > PER_EXAM; k++) m = (m + 1) % M;
+      if (models[m].n + b.length > PER_EXAM) return; // no cabe en ningún modelo
       models[m].units.push(b);
       models[m].n += b.length;
     });
@@ -60,6 +61,7 @@
     singles.forEach((u) => {
       for (let k = 0; k < M && models[p % M].n >= PER_EXAM; k++) p++;
       const m = models[p % M];
+      if (m.n >= PER_EXAM) return; // todos los modelos llenos: lo que sobra queda fuera de los modelos fijos
       m.units.push(u);
       m.n++;
       p++;

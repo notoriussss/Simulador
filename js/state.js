@@ -2,11 +2,15 @@
    stats[id] = { c: aciertos, w: fallos, b: aciertos seguidos (máx. 3) }.
    Una pregunta está «por repasar» si falló alguna vez y aún no suma 2 aciertos seguidos. */
 (function (S) {
+  S.store.prefix = (S.course.key || 'sim') + '-';
   S.stats = S.store.get('stats', {});
-  S.prefs = Object.assign({ pen: S.course.defaultPen }, S.store.get('prefs', {}));
+  S.prefs = Object.assign({ pen: S.course.defaultPen, extra: !!S.course.extraDefault }, S.store.get('prefs-v2', {}));
   if (!S.course.pens.includes(S.prefs.pen)) S.prefs.pen = S.course.defaultPen;
 
-  S.savePrefs = () => S.store.set('prefs', S.prefs);
+  S.savePrefs = () => S.store.set('prefs-v2', S.prefs);
+
+  /* Preguntas disponibles: las marcadas x (temario extra o «mencionado en clase») solo entran si el interruptor está activo. */
+  S.pool = (extra) => S.bank.filter((q) => extra || !q.x);
 
   S.record = (id, ok) => {
     const s = S.stats[id] || { c: 0, w: 0, b: 0 };

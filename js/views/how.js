@@ -24,10 +24,10 @@
       <section class="sheet stack">
         <h2>¿Arriesgar o dejar en blanco?</h2>
         <p class="lead">Puntos esperados por pregunta según cuántas opciones te quedan después de descartar. Un acierto vale +2.</p>
-        <div class="tbl"><table class="ev mono"><thead><tr><th>Opciones que quedan</th>${pens.map((p) => `<th>Factor −${p}</th>`).join('')}</tr></thead><tbody>
+        <div class="tbl"><table class="ev mono"><thead><tr><th>Opciones que quedan</th>${pens.map((p) => `<th>${p ? 'Factor −' + p : 'Sin resta'}</th>`).join('')}</tr></thead><tbody>
           ${[4, 3, 2].map((k) => `<tr><td>${k} (${k === 4 ? 'no descarto ninguna' : 'descarto ' + (4 - k)})</td>${pens.map((p) => `<td>${fmt(S.expected(k, p))}</td>`).join('')}</tr>`).join('')}
         </tbody></table></div>
-        <p style="max-width:68ch">Con <b>−2</b>, adivinar entre 4 te quita 1 punto en promedio y con 2 opciones quedas en cero: solo conviene responder si tu acierto supera el 50%. Con <b>−1</b> conviene arriesgar si lograste descartar al menos una opción.</p>
+        <p style="max-width:68ch">${pens.includes(2) ? 'Con <b>−2</b>, adivinar entre 4 te quita 1 punto en promedio y con 2 opciones quedas en cero: solo conviene responder si tu acierto supera el 50%. ' : ''}${pens.includes(1) ? 'Con <b>−1</b> conviene arriesgar si lograste descartar al menos una opción. ' : ''}${pens.includes(0) ? 'Con <b>sin resta</b>, nunca dejes nada en blanco.' : ''}</p>
       </section>
       <section class="sheet stack">
         <h2>${esc(S.course.howTitle)}</h2>

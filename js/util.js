@@ -36,7 +36,7 @@ window.Sim = window.Sim || {};
 
   /* localStorage opcional: si el navegador lo bloquea, todo funciona igual sin guardar progreso. */
   S.store = {
-    prefix: 'robotica-p1-',
+    prefix: 'sim-', // state.js lo reemplaza con la clave del curso
     get(k, d) { try { const v = localStorage.getItem(this.prefix + k); return v ? JSON.parse(v) : d; } catch (e) { return d; } },
     set(k, v) { try { localStorage.setItem(this.prefix + k, JSON.stringify(v)); } catch (e) { /* sin almacenamiento */ } },
     keys(start) { try { return Object.keys(localStorage).filter((k) => k.startsWith(this.prefix + start)); } catch (e) { return []; } },

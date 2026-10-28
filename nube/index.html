@@ -1,0 +1,66 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Simulacro Sistemas Distribuidos</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700&family=Atkinson+Hyperlegible:ital,wght@0,400;0,700;1,400&family=JetBrains+Mono:wght@400;600&display=swap">
+<link rel="stylesheet" href="../css/tokens.css">
+<link rel="stylesheet" href="../css/base.css">
+<link rel="stylesheet" href="../css/components.css">
+</head>
+<body>
+<div class="wrap">
+  <header class="top">
+    <div>
+      <div class="eyebrow" id="h-eyebrow"></div>
+      <h1 id="h-title"></h1>
+      <p class="sub" id="h-sub"></p>
+    </div>
+    <div class="legend" id="legend"></div>
+  </header>
+
+  <nav class="modes" role="tablist" aria-label="Modos de estudio">
+    <button role="tab" data-mode="sim" aria-selected="true">Simulacro</button>
+    <button role="tab" data-mode="prac" aria-selected="false">Práctica por tema</button>
+    <button role="tab" data-mode="err" aria-selected="false">Mis errores</button>
+    <button role="tab" data-mode="cmp" aria-selected="false">Contrastes</button>
+    <button role="tab" data-mode="how" aria-selected="false">Cómo estudiar</button>
+  </nav>
+
+  <main id="app" aria-live="polite"></main>
+  <noscript><p class="empty">Este simulacro necesita JavaScript activado.</p></noscript>
+</div>
+
+<!-- Núcleo (compartido por todos los cursos) -->
+<script src="../js/util.js"></script>
+<script src="../js/schema.js"></script>
+
+<!-- Datos del curso: textos, banco por tema y tablas de contraste -->
+<script src="data/course.js"></script>
+<script src="data/bank/fundamentos.js"></script>
+<script src="data/bank/transparencia.js"></script>
+<script src="data/bank/arquitecturas.js"></script>
+<script src="data/bank/procesos.js"></script>
+<script src="data/bank/redes.js"></script>
+<script src="data/bank/comunicacion.js"></script>
+<script src="data/bank/concurrencia.js"></script>
+<script src="data/bank/exclusion.js"></script>
+<script src="data/bank/grupos.js"></script>
+<script src="data/bank/bloques.js"></script>
+<script src="data/contrastes.js"></script>
+
+<!-- Lógica (compartida) -->
+<script src="../js/state.js"></script>
+<script src="../js/exam.js"></script>
+<script src="../js/ui.js"></script>
+<script src="../js/views/sim.js"></script>
+<script src="../js/views/prac.js"></script>
+<script src="../js/views/err.js"></script>
+<script src="../js/views/cmp.js"></script>
+<script src="../js/views/how.js"></script>
+<script src="../js/app.js"></script>
+</body>
+</html>

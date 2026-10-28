@@ -18,17 +18,20 @@
       <div class="row">
         <button class="btn primary" id="mix">Mezclar todo (20 preguntas)</button>
         <button class="btn" id="traps">Solo casi sinónimos y alias</button>
-        <button class="btn" id="data">Solo datos y cifras</button>
-        <button class="btn" id="sets">Solo bloques de opciones compartidas</button>
+        ${S.bank.some((q) => q.s === 'dato') ? '<button class="btn" id="data">Solo datos y cifras</button>' : ''}
+        ${S.bank.some((q) => q.set) ? '<button class="btn" id="sets">Solo bloques de opciones compartidas</button>' : ''}
         <button class="btn" id="unseen">Solo las que nunca vi</button>
       </div>
     </section>`);
-    const ids = (f) => S.bank.filter(f).map((q) => q.id);
-    v.querySelectorAll('[data-t]').forEach((b) => (b.onclick = () => start(ids((q) => q.t === b.dataset.t), S.topicName(b.dataset.t))));
-    v.querySelector('#mix').onclick = () => start(S.shuffle(S.bank).slice(0, 20).map((q) => q.id), 'Mezcla');
+    const all = (f) => S.bank.filter(f).map((q) => q.id);
+    const ids = (f) => S.pool(S.prefs.extra).filter(f).map((q) => q.id);
+    v.querySelectorAll('[data-t]').forEach((b) => (b.onclick = () => start(all((q) => q.t === b.dataset.t), S.topicName(b.dataset.t))));
+    v.querySelector('#mix').onclick = () => start(S.shuffle(S.pool(S.prefs.extra)).slice(0, 20).map((q) => q.id), 'Mezcla');
     v.querySelector('#traps').onclick = () => start(ids((q) => q.s === 'casi' || q.s === 'alias'), 'Casi sinónimos y alias');
-    v.querySelector('#data').onclick = () => start(ids((q) => q.s === 'dato'), 'Datos y cifras');
-    v.querySelector('#sets').onclick = () => start(ids((q) => q.set), 'Bloques de opciones compartidas');
+    const dataBtn = v.querySelector('#data');
+    if (dataBtn) dataBtn.onclick = () => start(ids((q) => q.s === 'dato'), 'Datos y cifras');
+    const setsBtn = v.querySelector('#sets');
+    if (setsBtn) setsBtn.onclick = () => start(ids((q) => q.set), 'Bloques de opciones compartidas');
     v.querySelector('#unseen').onclick = () => {
       const u = ids((q) => !S.stats[q.id]);
       u.length ? start(u, 'Nunca vistas') : S.flash(v, 'Ya viste todas las preguntas. Prueba con «Mis errores».');

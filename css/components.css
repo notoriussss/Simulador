@@ -128,3 +128,8 @@ td:first-child { font-weight: 700; }
   counter-increment: s; content: counter(s); font: 700 1.3rem var(--f-display); color: var(--accent);
   border: 2px solid var(--accent); border-radius: 50%; width: 2.2rem; height: 2.2rem; display: grid; place-items: center;
 }
+
+/* Marcas extra: temario extra / «mencionado en clase», e interruptor del temario */
+.chip.extra { background: var(--doubt-soft); color: var(--doubt); border-color: transparent; }
+.check { display: flex; gap: 8px; align-items: flex-start; font-size: .92rem; color: var(--muted); }
+.check input { margin-top: 4px; }

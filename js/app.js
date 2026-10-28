@@ -7,7 +7,7 @@
   document.getElementById('h-eyebrow').textContent = S.course.eyebrow;
   document.getElementById('h-title').textContent = S.course.title;
   document.getElementById('h-sub').textContent = S.course.sub;
-  document.title = S.course.title + ' · Parcial 1';
+  document.title = S.course.docTitle || S.course.title;
 
   S.refresh = () => {
     app.innerHTML = '';

@@ -1,0 +1,40 @@
+/* Tema propio del curso de Robótica: sobrescribe los colores y las fuentes de css/tokens.css (se carga después). */
+:root {
+  --bg: #eef1f6;
+  --paper: #ffffff;
+  --soft: #f3f6fa;
+  --ink: #101a30;
+  --muted: #566178;
+  --line: #d3dae6;
+
+  --accent: #1f4fd8;
+  --accent-ink: #ffffff;
+  --accent-soft: #e4ebff;
+
+  --ok: #17803d;
+  --ok-soft: #e1f3e7;
+  --bad: #b42318;
+  --bad-soft: #fcebe9;
+  --doubt: #8a5200;
+  --doubt-soft: #fff0d0;
+
+  --f-display: 'Bricolage Grotesque', 'Segoe UI', system-ui, sans-serif;
+  --f-body: 'IBM Plex Sans', 'Segoe UI', system-ui, sans-serif;
+  --f-mono: 'IBM Plex Mono', ui-monospace, Consolas, monospace;
+  --r: 10px;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #0b1222; --paper: #131c32; --soft: #19233d; --ink: #e7ecf8; --muted: #9aa7c4; --line: #27334f;
+    --accent: #86a8ff; --accent-ink: #0b1222; --accent-soft: #1b2a54;
+    --ok: #62d28d; --ok-soft: #123020; --bad: #ff8f85; --bad-soft: #3b1815; --doubt: #f2bd5e; --doubt-soft: #382b0e;
+    color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #0b1222; --paper: #131c32; --soft: #19233d; --ink: #e7ecf8; --muted: #9aa7c4; --line: #27334f;
+  --accent: #86a8ff; --accent-ink: #0b1222; --accent-soft: #1b2a54;
+  --ok: #62d28d; --ok-soft: #123020; --bad: #ff8f85; --bad-soft: #3b1815; --doubt: #f2bd5e; --doubt-soft: #382b0e;
+  color-scheme: dark;
+}
