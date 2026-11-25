@@ -8,6 +8,7 @@ sin internet solo cambia el tipo de letra). Funciona en el celular: guarda la ca
 |---|---|---|
 | Robótica (ROB-02 a ROB-04) | `robotica/index.html` | 320 |
 | Computación en la Nube (CEN-02 a CEN-05) | `nube/index.html` | 390 |
+| Computación en la Nube, Parcial 2 (CEN-06 a CEN-11) | `nube2/index.html` | 240 |
 | Desarrollo de Software | `dessoft/index.html` | 118 |
 
 La portada es `index.html`, con un enlace a cada curso.
@@ -38,7 +39,7 @@ js/                        Motor, compartido por todos los cursos
   ui.js                    Piezas de interfaz compartidas
   app.js                   Arranque y navegación
   views/                   sim.js · prac.js · err.js · cmp.js · how.js (una vista por modo)
-robotica/, nube/, dessoft/ Un curso por carpeta
+robotica/, nube/, nube2/, dessoft/ Un curso por carpeta
   index.html               Página del curso: carga el motor y sus datos
   theme.css                (solo Robótica) colores y fuentes propios; los demás usan los de css/tokens.css
   data/course.js           Textos, temas y estilos de pregunta

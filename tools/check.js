@@ -8,7 +8,7 @@ const path = require('path');
 const vm = require('vm');
 
 const root = path.join(__dirname, '..');
-const COURSES = ['robotica', 'nube', 'dessoft', 'patrones'];
+const COURSES = ['robotica', 'nube', 'nube2', 'dessoft', 'patrones'];
 const wanted = process.argv[2] ? [process.argv[2]] : COURSES;
 let failed = false;
 
