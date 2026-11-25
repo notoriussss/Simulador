@@ -49,6 +49,19 @@ window.Sim = window.Sim || {};
     });
   };
 
+  /* Verdadero/falso: fila = [ grupo, afirmación, esVerdadera (true/false), por_qué, fuente, extra ]. Solo 2 opciones, siempre en el mismo orden. */
+  S.addVF = function (topic, rows) {
+    rows.forEach((r) => {
+      const t = r[2];
+      S.bank.push({
+        id: S.bank.length, t: topic, s: 'vf', g: r[0], q: r[1],
+        a: t ? 'Verdadero' : 'Falso', w: r[3],
+        d: [{ o: t ? 'Falso' : 'Verdadero', n: r[3] }],
+        src: r[4],
+      });
+    });
+  };
+
   S.addSet = function (topic, id, group, src, options, questions, extra) {
     extra = extra || {};
     S.sets[id] = options.map((x) => x[0]);

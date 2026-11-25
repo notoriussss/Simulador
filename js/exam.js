@@ -9,7 +9,8 @@
      Cada opción lleva su nota de «por qué no». */
   S.inst = (q, r, order) => {
     const all = [{ o: q.a, n: null, ok: true }, ...q.d.map((d) => ({ o: d.o, n: d.n, ok: false }))];
-    const opts = order ? order.map((name) => all.find((x) => x.o === name)) : S.shuffle(all, r);
+    if (q.s === 'vf') order = ['Verdadero', 'Falso'];
+    const opts = order ?order.map((name) => all.find((x) => x.o === name)) : S.shuffle(all, r);
     return { q, opts, choice: null, conf: null };
   };
 

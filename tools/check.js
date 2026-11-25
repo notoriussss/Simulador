@@ -8,7 +8,7 @@ const path = require('path');
 const vm = require('vm');
 
 const root = path.join(__dirname, '..');
-const COURSES = ['robotica', 'nube', 'dessoft'];
+const COURSES = ['robotica', 'nube', 'dessoft', 'patrones'];
 const wanted = process.argv[2] ? [process.argv[2]] : COURSES;
 let failed = false;
 
@@ -42,8 +42,9 @@ for (const dir of wanted) {
     if (!q.w) errors.push(`${tag}: falta la explicación de la correcta`);
     if (!q.src) errors.push(`${tag}: falta la fuente`);
     const opts = [q.a, ...q.d.map((d) => d.o)];
-    if (opts.length !== 4 || opts.some((o) => !o)) errors.push(`${tag}: necesita 4 opciones no vacías`);
-    if (new Set(opts).size !== 4) errors.push(`${tag}: opciones repetidas`);
+    const nOpts = q.s === 'vf' ? 2 : 4;
+    if (opts.length !== nOpts || opts.some((o) => !o)) errors.push(`${tag}: necesita ${nOpts} opciones no vacías`);
+    if (new Set(opts).size !== nOpts) errors.push(`${tag}: opciones repetidas`);
     q.d.forEach((d) => { if (!d.n) errors.push(`${tag}: falta la nota del distractor «${d.o}»`); });
     if (seenStems.has(q.q)) warns.push(`${tag}: enunciado repetido con #${seenStems.get(q.q)}`);
     seenStems.set(q.q, q.id);
