@@ -125,11 +125,11 @@ SET('SL', 'serverless-vs', 'serverless', 'CEN-06 · lám. 6, 44 · CEN-10 · lá
 ]);
 
 // ───────────────────────── CEN-07 · Arquitectura de referencia ─────────────────────────
-SET('AQ', 'actores', 'actores', 'CEN-07 · lám. 5 · Actores', [
-  ['Consumidor de la nube', 'Persona u organización que usa los servicios de un proveedor.'],
-  ['Proveedor de la nube', 'Organización que pone los servicios a disposición: despliegue, orquestación, gestión, seguridad y privacidad.'],
-  ['Auditor de la nube', 'Hace una evaluación independiente de los servicios, su rendimiento y su seguridad.'],
-  ['Broker de la nube', 'Intermediario que gestiona el uso, rendimiento y entrega de servicios entre proveedores y consumidores.']
+SET('AQ', 'actores', 'actores', 'CEN-07 · lám. 5-6 · Actores y Proveedor', [
+  ['Consumidor de la nube', 'Persona u organización que mantiene una relación comercial con los proveedores y usa sus servicios.'],
+  ['Proveedor de la nube', 'Persona, organización o entidad responsable de hacer que un servicio esté disponible. En su diagrama: Service Deployment, Service Orchestration, Cloud Service Management, Security y Privacy.'],
+  ['Auditor de la nube', 'Parte que puede evaluar de forma independiente los servicios, las operaciones del sistema de información, el rendimiento y la seguridad.'],
+  ['Broker de la nube', 'Entidad que gestiona el uso, rendimiento y entrega de los servicios, y negocia relaciones entre proveedores y consumidores.']
 ], [
   ['Actor NIST que usa los servicios de la nube:', 0],
   ['Actor NIST encargado de Service Deployment, Service Orchestration y Cloud Service Management:', 1],
