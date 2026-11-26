@@ -14,7 +14,6 @@ Sim.contrasts.push(
       ['2007', 'IBM, Google y universidades de EE. UU.', 'Servicios alojados en sus «nubes»'],
       ['2008', 'Business Week (4 ago) y The Economist (25 oct)', 'Suplementos que llevan la nube al gran público'],
       ['2010', 'The Economist y Forbes', 'Vuelven a insistir en el impacto de la nube'],
-      ['2011', 'Cloud Security Alliance', 'Consejo de Seguridad como Servicio (SecaaS)'],
       ['2015', 'Open Container Initiative', 'Estándares abiertos de contenedores']
     ]
   },
@@ -131,15 +130,13 @@ Sim.contrasts.push(
   },
   {
     g: 'baremetal',
-    title: 'Siglas de CEN-10 y CEN-11',
+    title: 'Siglas de CEN-10',
     lead: 'Siglas parecidas que el profesor puede poner juntas.',
     cols: ['Sigla', 'Significa', 'Idea clave'],
     rows: [
       ['BMaaS', 'Bare Metal como servicio', 'Hardware sin virtualizar; máximo rendimiento (HPC); pierde el escalado rápido'],
       ['VPC', 'Nube privada virtual', 'Red privada DENTRO de una nube pública: subredes, VPN sitio a sitio'],
-      ['AIPaaS', 'PaaS para IA', 'Modelos preentrenados y APIs (habla, voz a texto)'],
-      ['SecaaS', 'Seguridad como servicio', 'Categorías de la CSA (2011)'],
-      ['SLA', 'Acuerdo de nivel de servicio', 'Condición indispensable antes de usar la nube']
+      ['AIPaaS', 'PaaS para IA', 'Modelos preentrenados y APIs (habla, voz a texto)']
     ]
   },
   {
@@ -197,77 +194,13 @@ Sim.contrasts.push(
   {
     g: 'despliegue',
     title: 'Modelos de despliegue',
-    lead: 'El NIST define 4; la mayoría solo acepta 3 (sin la comunitaria). Multinube no es híbrida.',
+    lead: 'El NIST define 4; la mayoría solo acepta 3 (pública, privada e híbrida).',
     cols: ['Modelo', 'Para quién', 'Pista'],
     rows: [
-      ['Privada', 'Una única organización con múltiples consumidores', '«exclusiva», «no se ofrece al público»; inconveniente: más costes'],
-      ['Pública', 'El público en general', '«on premise del proveedor»; académica, empresa o gobierno'],
-      ['Híbrida', 'Combinación de 2+ nubes que siguen siendo entidades únicas', '«portar datos o aplicaciones»; lo crítico en la privada'],
-      ['Comunitaria', 'Comunidad con objetivos comunes', '«misión, políticas, seguridad, compliance»; solo la recoge el NIST'],
-      ['Multinube', 'Servicios de más de un proveedor', '«vendor lock-in»; Salesforce + Workday; Kubernetes']
-    ]
-  },
-  {
-    g: 'nistterm',
-    title: 'Términos recomendados por el NIST',
-    lead: 'Consumidor es una persona u organización; cliente es una máquina o aplicación.',
-    cols: ['Término', 'Qué es'],
-    rows: [
-      ['Consumidor de la nube', 'Persona u organización cliente de una nube'],
-      ['Cliente', 'Máquina o aplicación de software que accede por red'],
-      ['Proveedor de la nube', 'Organización que proporciona servicios de la nube']
-    ]
-  },
-  {
-    g: 'adoptar',
-    title: 'Adoptar la nube',
-    lead: 'Las cuatro cosas a considerar y lo que la lámina dice de cada una.',
-    cols: ['Consideración', 'Qué incluye'],
-    rows: [
-      ['Económicas', 'Pública = alquiler externalizado; privada = más costes; híbrida = lo crítico en la privada'],
-      ['Características operacionales', 'Rendimiento (performance) y fiabilidad'],
-      ['Organizacionales', 'Gran dependencia de la conectividad, dispositivos y ancho de banda'],
-      ['SLA', 'Define la relación legal; firmarlo es condición indispensable'],
-      ['Seguridad', 'Tríada CIA, privacidad y cumplimiento (compliance)']
-    ]
-  },
-  {
-    g: 'cia',
-    title: 'Seguridad en la nube',
-    lead: 'La tríada son tres; todo lo demás es complementario. El responsable de los datos es el cliente.',
-    cols: ['Grupo', 'Elementos'],
-    rows: [
-      ['Tríada CIA', 'Confidencialidad, integridad, disponibilidad'],
-      ['Complementarios', 'Autenticación, autorización, auditoría, responsabilidad (accountability), privacidad'],
-      ['Preguntas clave', '¿Dónde estarán los datos? ¿Con qué protección? ¿Quién es responsable? (el cliente)'],
-      ['IBM', '«Secure by design»: seguridad personalizada que parte del cliente'],
-      ['Activos', 'Los datos y las aplicaciones']
-    ]
-  },
-  {
-    g: 'secaas',
-    title: 'Quién es quién en CEN-11',
-    lead: 'Organizaciones y empresas que nombra la lámina, y las 10 categorías SecaaS de la CSA (solo los nombres: la lámina no las define).',
-    cols: ['Nombre', 'Qué dice la lámina'],
-    rows: [
-      ['Cloud Security Alliance (2011)', 'Consejo de Seguridad como Servicio; clasifica los servicios de seguridad'],
-      ['IBM', '«Secure by design»: seguridad personalizada que parte del cliente'],
-      ['NIST', 'Recomienda los términos consumidor de la nube, cliente y proveedor'],
-      ['Apple', 'iCloud: sincronización en la nube móvil'],
-      ['Categorías SecaaS (1-5)', 'Gestión de identidades y acceso · Prevención de pérdida de datos · Seguridad en la Web · Seguridad para el correo electrónico · Evaluación de la seguridad'],
-      ['Categorías SecaaS (6-10)', 'Gestión de intrusiones · Seguridad de la información y gestión de eventos · Cifrado · Continuidad del negocio y recuperación de desastres · Red de seguridad']
-    ]
-  },
-  {
-    g: 'movil',
-    title: 'Nube móvil',
-    lead: 'Tres ideas: el móvil es pantalla, hace falta buena conexión y lo clave es sincronizar.',
-    cols: ['Idea', 'Detalle'],
-    rows: [
-      ['Definición', 'Datos en la nube; el móvil actúa como terminal de presentación'],
-      ['Conexión', 'Al menos 3G (HSDPA, HSUPA, HSPA+) o 4G'],
-      ['Asunto clave', 'Sincronización entre dispositivos'],
-      ['Ejemplo', 'iCloud de Apple']
+      ['Privada', 'Una organización', '«no ofrecidos al público», «íntegramente gestionada por una organización»'],
+      ['Pública', 'El público en general', '«operada por un proveedor»'],
+      ['Híbrida', 'Combinación de 2+ nubes individuales (privadas, compartidas o públicas)', '«enviar datos o aplicaciones entre ellas»'],
+      ['Comunitaria', 'Organizaciones con una función o propósito común', '«misión, políticas, seguridad»; la define el NIST, la mayoría no la acepta']
     ]
   }
 );

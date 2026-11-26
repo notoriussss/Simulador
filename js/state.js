@@ -4,6 +4,18 @@
 (function (S) {
   S.store.prefix = (S.course.key || 'sim') + '-';
   S.stats = S.store.get('stats', {});
+  /* Preguntas quitadas del banco (course.dropped: ids viejos): corre una sola vez los ids guardados para no mezclar el progreso.
+     ponytail: una sola tanda de quitadas por curso; si se quitan más, la lista nueva debe usar los ids ya corridos y otra clave. */
+  const gone = S.course.dropped || [];
+  if (gone.length && !S.store.get('dropped', 0)) {
+    const moved = {};
+    Object.entries(S.stats).forEach(([id, s]) => {
+      if (!gone.includes(+id)) moved[+id - gone.filter((g) => g < +id).length] = s;
+    });
+    S.stats = moved;
+    S.store.set('stats', moved);
+    S.store.set('dropped', 1);
+  }
   S.prefs = Object.assign({ pen: S.course.defaultPen, extra: !!S.course.extraDefault }, S.store.get('prefs-v2', {}));
   if (!S.course.pens.includes(S.prefs.pen)) S.prefs.pen = S.course.defaultPen;
 

@@ -45,7 +45,7 @@ Sim.add('CA', [
   ['def', 'complem', 'Característica complementaria: la calidad del servicio se obtiene, por lo general, mediante contrato con el proveedor.', 'Calidad de servicio (QoS)',
     'QoS es una de las complementarias que añaden ventajas adicionales a las del NIST.',
     ['Fiabilidad', 'Fiabilidad viene de la potencia y escalamiento de las redes del proveedor.'],
-    ['Acuerdo de nivel de servicio', 'El SLA es el contrato en sí (CEN-11); la característica complementaria se llama QoS.'],
+    ['Acuerdo de nivel de servicio', 'El acuerdo de nivel de servicio es el contrato; la característica complementaria se llama QoS.'],
     ['Servicio medido', 'Servicio medido es esencial del NIST: medir el consumo.'],
     'CEN-06 · lám. 40 · Complementarias'],
   ['app', 'complem', 'Característica complementaria cuyo ejemplo son Oracle, SAP e IBM migrando sus servicios a la nube:', 'Fiabilidad',

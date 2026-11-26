@@ -80,7 +80,7 @@ Sim.add('CT', [
     'CEN-09 · lám. 14 · Orquestación'],
   ['dato', 'hitos', 'Asociación fundada en 2015 para diseñar estándares abiertos sobre virtualización a nivel de sistema operativo:', 'Open Container Initiative (OCI)',
     'Su fin: que las plataformas de contenedores no estén vinculadas a ninguna empresa o proyecto concreto.',
-    ['Cloud Security Alliance (CSA)', 'La CSA es de seguridad (SecaaS, 2011).'],
+    ['Cloud Security Alliance (CSA)', 'No es la asociación de contenedores de la lámina.'],
     ['Cloud Native Container Group', 'Nombre inventado.'],
     ['NIST', 'El NIST define la nube; no es la asociación de contenedores.'],
     'CEN-09 · lám. 17 · OCI'],

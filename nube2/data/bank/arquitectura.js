@@ -49,7 +49,7 @@ Sim.add('AQ', [
     ['Las APIs públicas de la nube híbrida', 'Las APIs son parte del acceso a red, no el front end.'],
     'CEN-07 · lám. 9 · Seis capas', true],
   ['def', 'actores', 'Actor del NIST: persona u organización que mantiene una relación de negocio con un proveedor y usa sus servicios.', 'Consumidor de la nube',
-    'El consumidor (cloud consumer) es quien usa los servicios; en CEN-11 el NIST lo define como «persona u organización que es cliente de una nube».',
+    'El consumidor (cloud consumer) es quien usa los servicios; la lámina de Actores lo define como persona u organización que mantiene una relación comercial con los proveedores y usa sus servicios.',
     ['Proveedor de la nube', 'El proveedor es la organización que pone los servicios a disposición.'],
     ['Broker de la nube', 'El broker intermedia entre consumidores y proveedores.'],
     ['Carrier de la nube', 'El carrier provee la conectividad y el transporte de los servicios.'],

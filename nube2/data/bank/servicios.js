@@ -10,7 +10,7 @@ Sim.add('MS', [
     'El proveedor posee, gestiona y mantiene el hardware y software y le cobra al usuario, en vez de que la organización los compre e instale.',
     ['La ubicación de la infraestructura', 'Eso define los modelos de DESPLIEGUE.'],
     ['El tipo de hipervisor usado', 'No tiene relación.'],
-    ['El contrato de nivel de servicio', 'El SLA es otro tema (CEN-11).'],
+    ['El contrato de nivel de servicio', 'El contrato de nivel de servicio es donde el proveedor SaaS garantiza disponibilidad, rendimiento y seguridad; no es lo que se pregunta.'],
     'CEN-10 · lám. 6 · Modelos de servicio'],
   ['alias', 'servicio', 'SaaS a veces se denomina:', 'Servicios de aplicaciones en la nube',
     'Software de aplicaciones alojado en la nube y listo para usar.',

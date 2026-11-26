@@ -34,7 +34,7 @@ SET('FU', 'definiciones', 'defs', 'CEN-06 · lám. 7, 18-19 · Definiciones', [
   ['NIST', 'Su definición es la más referenciada: acceso ubicuo, adaptado y bajo demanda a recursos configurables compartidos.'],
   ['Universidad de Berkeley', 'Definición complementaria: aplicaciones entregadas como servicio + hardware y software del centro de datos (la nube).'],
   ['MIT', 'Allí, en 1961, McCarthy enunció el término time sharing.'],
-  ['Cloud Security Alliance', 'Organización de seguridad que en 2011 definió la seguridad como servicio (SecaaS).']
+  ['Cloud Security Alliance', 'Distractor: no es autora de ninguna de las definiciones de la lámina.']
 ], [
   ['Institución de EE. UU. autora de la definición de nube más referenciada:', 0],
   ['Autora de la definición que separa las aplicaciones (SaaS) del hardware y software del centro de datos:', 1],
@@ -281,16 +281,15 @@ SET('MS', 'servicio-control', 'stack', 'CEN-07 · lám. 10 · CEN-10 · lám. 12
   ['Esquema en el que el proveedor gestiona incluso las aplicaciones y los datos:', 3]
 ]);
 
-SET('MS', 'siglas', 'baremetal', 'CEN-10 · lám. 13, 19-20 · CEN-11 · lám. 35', [
+SET('MS', 'siglas', 'baremetal', 'CEN-10 · lám. 13, 19-20 · Siglas', [
   ['BMaaS', 'Bare Metal como servicio: acceso directo al hardware sin virtualizar.'],
   ['VPC', 'Nube privada virtual: red privada creada dentro de una nube pública.'],
   ['AIPaaS', 'PaaS para inteligencia artificial: modelos preentrenados y APIs de IA.'],
-  ['SecaaS', 'Seguridad como servicio: categorías definidas por la Cloud Security Alliance.']
+  ['DaaS', 'Sigla que en la lámina vale para dos modelos: Datos como servicio y Escritorio como servicio.']
 ], [
   ['Sigla del servicio que da a los usuarios control casi total de sus especificaciones de hardware:', 0],
   ['Sigla de lo que permite crear subredes y VPN de sitio a sitio dentro de una nube pública:', 1],
-  ['Sigla del servicio que incluye APIs de reconocimiento del habla o voz a texto:', 2],
-  ['Sigla del servicio cuyas categorías incluyen cifrado y gestión de intrusiones:', 3]
+  ['Sigla del servicio que incluye APIs de reconocimiento del habla o voz a texto:', 2]
 ]);
 
 SET('MS', 'iaas-comp', 'servicio', 'CEN-10 · lám. 15-18 · IaaS', [
@@ -305,77 +304,23 @@ SET('MS', 'iaas-comp', 'servicio', 'CEN-10 · lám. 15-18 · IaaS', [
   ['Componente de IaaS en el que se aprovisionan «instancias» virtuales con cómputo y memoria:', 3]
 ]);
 
-// ───────────────────────── CEN-11 · Modelos de despliegue ─────────────────────────
-SET('MD', 'despliegue-4', 'despliegue', 'CEN-11 · lám. 6-9 · Modelos de despliegue', [
-  ['Nube privada', 'Exclusiva de una única organización, con múltiples consumidores; no se ofrece al público.'],
+// ───────────────────────── CEN-06 · Modelos de despliegue ─────────────────────────
+SET('MD', 'despliegue-4', 'despliegue', 'CEN-06 · lám. 30-31 · Modelos de despliegue', [
+  ['Nube privada', 'Servicios no ofrecidos al público; infraestructura íntegramente gestionada por una organización.'],
   ['Nube pública', 'Operada por un proveedor que ofrece servicios al público en general.'],
-  ['Nube híbrida', 'Combinación de dos o más nubes que siguen siendo entidades únicas pero permiten portar datos o aplicaciones.'],
-  ['Nube comunitaria', 'Sirve a un propósito común de una comunidad con misión, políticas y seguridad compartidas.']
+  ['Nube híbrida', 'Combinación de dos o más nubes individuales; permite enviar datos o aplicaciones entre ellas.'],
+  ['Nube comunitaria', 'Organizada para servir a una función o propósito común; comparte misión, políticas y seguridad.']
 ], [
   ['Modelo de despliegue íntegramente gestionado por una organización y no ofrecido al público:', 0],
   ['Modelo de despliegue que ofrece servicios al público en general:', 1],
-  ['Modelo de despliegue que permite portar datos o aplicaciones entre nubes individuales:', 2],
-  ['Modelo de despliegue organizado para una comunidad con necesidades comunes de cumplimiento regulatorio:', 3]
+  ['Modelo de despliegue que permite enviar datos o aplicaciones entre nubes individuales:', 2],
+  ['Modelo de despliegue organizado para servir a una función o propósito común:', 3]
 ]);
 
-SET('MD', 'despliegue-b', 'despliegue', 'CEN-11 · lám. 7, 9, 16 · foto de clase', [
-  ['Nube híbrida', 'Muchas organizaciones la eligen: lo menos crítico en la pública y lo más crítico en la privada.'],
-  ['Multinube', 'Servicios de más de un proveedor; evita el vendor lock-in.'],
-  ['Nube comunitaria', 'La pueden administrar las organizaciones constituyentes o terceras partes; solo la recoge el NIST.'],
-  ['Nube pública', 'Existe en la propia infraestructura (on premise) del proveedor.']
-], [
-  ['Modelo que elige una empresa para dejar sus servicios críticos en la privada y el resto en la pública:', 0],
-  ['Modelo que permite optimizar rendimiento y controlar costos evitando la dependencia de un proveedor:', 1],
-  ['Modelo que la mayoría de organizaciones no incluye, porque solo dividen en pública, privada e híbrida:', 2],
-  ['Modelo que puede ser propiedad de una organización académica, empresa o gobierno y vive en la infraestructura del proveedor:', 3]
-]);
 
-SET('MD', 'nistterm', 'nistterm', 'CEN-11 · lám. 5 · Términos NIST', [
-  ['Consumidor de la nube', 'Persona u organización que es cliente de una nube.'],
-  ['Cliente', 'Máquina o aplicación de software que accede a una nube por una conexión de red.'],
-  ['Proveedor de la nube', 'Organización que proporciona servicios de la nube.'],
-  ['Auditor de la nube', 'Actor de la arquitectura NIST que evalúa servicios; no es uno de los tres términos de CEN-11.']
-], [
-  ['Término NIST para una persona u organización que usa una nube:', 0],
-  ['Término NIST para una máquina o aplicación de software que accede a una nube:', 1],
-  ['Término NIST para la organización que proporciona servicios de la nube:', 2]
-]);
 
-// ───────────────────────── CEN-11 · Adopción y seguridad ─────────────────────────
-SET('AD', 'consideraciones', 'adoptar', 'CEN-11 · lám. 14 · Adaptar la nube', [
-  ['Consideraciones económicas', 'Las oportunidades económicas y los riesgos de usar estos servicios.'],
-  ['Características operacionales', 'Las características técnicas de los servicios: rendimiento (performance) y fiabilidad.'],
-  ['Acuerdo de nivel de servicios', 'Los términos normales de servicio (SLA).'],
-  ['Seguridad', 'Las oportunidades y riesgos de seguridad.']
-], [
-  ['Al adoptar la nube: las oportunidades económicas y los riesgos de usar los servicios:', 0],
-  ['Al adoptar la nube: el rendimiento (performance) y la fiabilidad de los servicios:', 1],
-  ['Al adoptar la nube: los términos normales de servicio:', 2],
-  ['Al adoptar la nube: la protección de los datos, la privacidad y el cumplimiento (compliance):', 3]
-]);
 
-SET('AD', 'seg-claves', 'cia', 'CEN-11 · lám. 29, 33 · Seguridad', [
-  ['El cliente', 'Respuesta clara de los grandes proveedores a «¿quién es responsable de los datos?».'],
-  ['Los datos y las aplicaciones', 'Los dos grandes bloques en que se agrupan los activos de despliegue en la nube.'],
-  ['Un enfoque basado en riesgos', 'Lo que se debe adoptar para migrar y elegir la seguridad, porque ninguna lista de controles cubre todas las circunstancias.'],
-  ['El proveedor', 'Diseña el servicio específico según las preferencias del cliente, pero no es el responsable de los datos.']
-], [
-  ['Para los grandes proveedores, quién es el responsable de los datos llevados a la nube:', 0],
-  ['Los dos grandes bloques en que se agrupan los activos de despliegue en la nube:', 1],
-  ['Como ninguna lista de controles de seguridad cubre todas las circunstancias, qué se debe adoptar para migrar a la nube:', 2]
-]);
 
-SET('AD', 'organizaciones', 'secaas', 'CEN-11 · lám. 5, 26, 29, 35', [
-  ['Cloud Security Alliance', 'En 2011 anunció el grupo «Consejo de Seguridad como Servicio» y clasificó los servicios de seguridad (SecaaS).'],
-  ['IBM', 'Llama «Secure by design» (seguridad personalizada) a la seguridad que parte del cliente.'],
-  ['NIST', 'Recomienda usar los términos consumidor de la nube, cliente y proveedor de la nube.'],
-  ['Apple', 'Su plataforma iCloud revolucionó la sincronización en la nube móvil.']
-], [
-  ['Organización que publicó en 2011 un informe con las categorías de la Seguridad como Servicio:', 0],
-  ['Empresa que llama «Secure by design» a la seguridad personalizada:', 1],
-  ['Institución que recomienda los términos consumidor de la nube, cliente y proveedor:', 2],
-  ['Empresa cuyo servicio de sincronización llevó la nube móvil al gran público:', 3]
-]);
 
 // ───────────────────────── CEN-07 · Actores (agregado después) ─────────────────────────
 SET('AQ', 'actores-2', 'actores', 'CEN-07 · lám. 5 · Actores', [
@@ -390,14 +335,3 @@ SET('AQ', 'actores-2', 'actores', 'CEN-07 · lám. 5 · Actores', [
   ['Persona, organización o entidad responsable de hacer que un servicio esté disponible:', 3]
 ]);
 
-SET('AD', 'movil', 'movil', 'CEN-11 · lám. 24-26 · Nube móvil', [
-  ['Nube móvil', 'Los datos están en la nube y el dispositivo móvil actúa como terminal de presentación.'],
-  ['Sincronización', 'El asunto clave actual: usar mensajes, llamadas y contenidos desde múltiples dispositivos.'],
-  ['iCloud', 'Plataforma de Apple que revolucionó la sincronización, llevando el consumo al gran público.'],
-  ['HSDPA, HSUPA o HSPA+', 'Protocolos de teléfonos 3G, el mínimo de conexión que pide la nube móvil.']
-], [
-  ['Modelo en el que el smartphone o la tableta actúan como pantalla de datos guardados en la nube:', 0],
-  ['Según la lámina, el asunto clave actual de la nube móvil:', 1],
-  ['Servicio que sube un dato desde un dispositivo y lo pone al alcance de toda la familia de dispositivos Apple:', 2],
-  ['Protocolos de tercera generación que menciona la lámina como requisito mínimo de conexión:', 3]
-]);
