@@ -82,9 +82,9 @@ Sim.contrasts.push(
     rows: [
       ['Consumidor', 'Usa los servicios de la nube', 'SaaS, PaaS o IaaS consumer'],
       ['Proveedor', 'Pone los servicios a disposición', 'Service Deployment, Service Orchestration, Cloud Service Management, Security, Privacy'],
-      ['Auditor', 'Evaluación independiente', '—'],
-      ['Broker', 'Intermediario entre consumidores y proveedores', '—'],
-      ['Carrier', 'Conectividad y transporte', '—'],
+      ['Auditor', 'Evalúa de forma independiente servicios, operaciones, rendimiento y seguridad', '«independiente»'],
+      ['Broker', 'Gestiona uso, rendimiento y entrega; negocia relaciones entre proveedores y consumidores', '«negocia»'],
+      ['Carrier', 'Intermediario de conectividad y transporte del proveedor al consumidor', '«conectividad y transporte»'],
       ['SaaS Consumer', 'Aplicaciones de negocio', 'ERP, CRM, Billing, Sales, Collaboration, HR, Email & Office'],
       ['PaaS Consumer', 'Desarrollo y datos', 'Business Intelligence, Database, Development & Testing, Application Deployment, Integration'],
       ['IaaS Consumer', 'Infraestructura', 'Storage, CDN, Backup & Recovery, Compute, Platform Hosting']
@@ -246,20 +246,16 @@ Sim.contrasts.push(
   },
   {
     g: 'secaas',
-    title: 'Categorías SecaaS (CSA, 2011)',
-    lead: 'Diez categorías. Si te dan una sigla, buscá la categoría.',
-    cols: ['Categoría', 'Sigla habitual'],
+    title: 'Quién es quién en CEN-11',
+    lead: 'Organizaciones y empresas que nombra la lámina, y las 10 categorías SecaaS de la CSA (solo los nombres: la lámina no las define).',
+    cols: ['Nombre', 'Qué dice la lámina'],
     rows: [
-      ['Gestión de identidades y acceso', 'IAM'],
-      ['Prevención de pérdida de datos', 'DLP'],
-      ['Seguridad en la Web', '—'],
-      ['Seguridad para el correo electrónico', '—'],
-      ['Evaluación de la seguridad', '—'],
-      ['Gestión de intrusiones', '—'],
-      ['Seguridad de la información y gestión de eventos', 'SIEM'],
-      ['Cifrado', '—'],
-      ['Continuidad del negocio y recuperación de desastres', 'BC/DR'],
-      ['Red de seguridad', '—']
+      ['Cloud Security Alliance (2011)', 'Consejo de Seguridad como Servicio; clasifica los servicios de seguridad'],
+      ['IBM', '«Secure by design»: seguridad personalizada que parte del cliente'],
+      ['NIST', 'Recomienda los términos consumidor de la nube, cliente y proveedor'],
+      ['Apple', 'iCloud: sincronización en la nube móvil'],
+      ['Categorías SecaaS (1-5)', 'Gestión de identidades y acceso · Prevención de pérdida de datos · Seguridad en la Web · Seguridad para el correo electrónico · Evaluación de la seguridad'],
+      ['Categorías SecaaS (6-10)', 'Gestión de intrusiones · Seguridad de la información y gestión de eventos · Cifrado · Continuidad del negocio y recuperación de desastres · Red de seguridad']
     ]
   },
   {

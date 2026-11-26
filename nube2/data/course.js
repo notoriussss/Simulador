@@ -14,7 +14,7 @@ window.Sim = window.Sim || {};
     pens: [2, 1],
     defaultPen: 2,
     penNote: 'En los parciales de IA usó ambos; −2 es el más reciente.',
-    extraLabel: 'Incluir lo que sale solo en diagramas y fotos de clase (actores NIST, seis capas, serverless)',
+    extraLabel: 'Incluir lo que sale solo en diagramas y fotos de clase (actores, proveedor y consumidor, seis capas, serverless)',
     extraDefault: true,
     xTopics: [],
     xChip: {},

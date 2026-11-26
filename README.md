@@ -8,7 +8,7 @@ sin internet solo cambia el tipo de letra). Funciona en el celular: guarda la ca
 |---|---|---|
 | Robótica (ROB-02 a ROB-04) | `robotica/index.html` | 320 |
 | Computación en la Nube (CEN-02 a CEN-05) | `nube/index.html` | 390 |
-| Computación en la Nube, Parcial 2 (CEN-06 a CEN-11) | `nube2/index.html` | 240 |
+| Computación en la Nube, Parcial 2 (CEN-06 a CEN-11) | `nube2/index.html` | 244 |
 | Desarrollo de Software | `dessoft/index.html` | 118 |
 
 La portada es `index.html`, con un enlace a cada curso.

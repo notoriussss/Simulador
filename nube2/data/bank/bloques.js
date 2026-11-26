@@ -125,7 +125,7 @@ SET('SL', 'serverless-vs', 'serverless', 'CEN-06 · lám. 6, 44 · CEN-10 · lá
 ]);
 
 // ───────────────────────── CEN-07 · Arquitectura de referencia ─────────────────────────
-SET('AQ', 'actores', 'actores', 'CEN-07 · lám. 5 · Actores (NIST)', [
+SET('AQ', 'actores', 'actores', 'CEN-07 · lám. 5 · Actores', [
   ['Consumidor de la nube', 'Persona u organización que usa los servicios de un proveedor.'],
   ['Proveedor de la nube', 'Organización que pone los servicios a disposición: despliegue, orquestación, gestión, seguridad y privacidad.'],
   ['Auditor de la nube', 'Hace una evaluación independiente de los servicios, su rendimiento y su seguridad.'],
@@ -354,27 +354,40 @@ SET('AD', 'consideraciones', 'adoptar', 'CEN-11 · lám. 14 · Adaptar la nube',
   ['Al adoptar la nube: la protección de los datos, la privacidad y el cumplimiento (compliance):', 3]
 ]);
 
-SET('AD', 'cia', 'cia', 'CEN-11 · lám. 23, 34 · Tríada CIA', [
-  ['Confidencialidad', 'Solo quien está autorizado puede acceder a la información.'],
-  ['Integridad', 'La información no se altera sin autorización y se mantiene exacta.'],
-  ['Disponibilidad', 'La información y los servicios están accesibles cuando se necesitan.'],
-  ['Responsabilidad', 'Accountability: principio complementario, no parte de la tríada.']
+SET('AD', 'seg-claves', 'cia', 'CEN-11 · lám. 29, 33 · Seguridad', [
+  ['El cliente', 'Respuesta clara de los grandes proveedores a «¿quién es responsable de los datos?».'],
+  ['Los datos y las aplicaciones', 'Los dos grandes bloques en que se agrupan los activos de despliegue en la nube.'],
+  ['Un enfoque basado en riesgos', 'Lo que se debe adoptar para migrar y elegir la seguridad, porque ninguna lista de controles cubre todas las circunstancias.'],
+  ['El proveedor', 'Diseña el servicio específico según las preferencias del cliente, pero no es el responsable de los datos.']
 ], [
-  ['Principio de la tríada CIA: solo quien está autorizado accede a la información:', 0],
-  ['Principio de la tríada CIA: la información no se modifica sin autorización:', 1],
-  ['Principio de la tríada CIA: los servicios están accesibles cuando se necesitan:', 2]
+  ['Para los grandes proveedores, quién es el responsable de los datos llevados a la nube:', 0],
+  ['Los dos grandes bloques en que se agrupan los activos de despliegue en la nube:', 1],
+  ['Como ninguna lista de controles de seguridad cubre todas las circunstancias, qué se debe adoptar para migrar a la nube:', 2]
 ]);
 
-SET('AD', 'secaas-cat', 'secaas', 'CEN-11 · lám. 36 · SecaaS', [
-  ['Gestión de identidades y acceso', 'Categoría SecaaS que controla quién es cada usuario y a qué puede acceder (IAM).'],
-  ['Prevención de pérdida de datos', 'Categoría SecaaS que evita que datos sensibles salgan de la organización (DLP).'],
-  ['Seguridad de la información y gestión de eventos', 'Categoría SecaaS que recolecta y correlaciona eventos de seguridad (SIEM).'],
-  ['Continuidad del negocio y recuperación de desastres', 'Categoría SecaaS que mantiene la operación y recupera tras un desastre (BC/DR).']
+SET('AD', 'organizaciones', 'secaas', 'CEN-11 · lám. 5, 26, 29, 35', [
+  ['Cloud Security Alliance', 'En 2011 anunció el grupo «Consejo de Seguridad como Servicio» y clasificó los servicios de seguridad (SecaaS).'],
+  ['IBM', 'Llama «Secure by design» (seguridad personalizada) a la seguridad que parte del cliente.'],
+  ['NIST', 'Recomienda usar los términos consumidor de la nube, cliente y proveedor de la nube.'],
+  ['Apple', 'Su plataforma iCloud revolucionó la sincronización en la nube móvil.']
 ], [
-  ['Categoría SecaaS de la CSA conocida por la sigla IAM:', 0],
-  ['Categoría SecaaS de la CSA conocida por la sigla DLP:', 1],
-  ['Categoría SecaaS de la CSA conocida por la sigla SIEM:', 2],
-  ['Categoría SecaaS de la CSA conocida por la sigla BC/DR:', 3]
+  ['Organización que publicó en 2011 un informe con las categorías de la Seguridad como Servicio:', 0],
+  ['Empresa que llama «Secure by design» a la seguridad personalizada:', 1],
+  ['Institución que recomienda los términos consumidor de la nube, cliente y proveedor:', 2],
+  ['Empresa cuyo servicio de sincronización llevó la nube móvil al gran público:', 3]
+]);
+
+// ───────────────────────── CEN-07 · Actores (agregado después) ─────────────────────────
+SET('AQ', 'actores-2', 'actores', 'CEN-07 · lám. 5 · Actores', [
+  ['Cloud Carrier', 'El intermediario que provee conectividad y transporte de los servicios desde los proveedores hasta los consumidores.'],
+  ['Cloud Broker', 'Entidad que gestiona el uso, rendimiento y entrega de los servicios, y negocia relaciones entre proveedores y consumidores.'],
+  ['Cloud Auditor', 'Parte que puede evaluar de forma independiente los servicios, las operaciones del sistema de información, el rendimiento y la seguridad.'],
+  ['Cloud Provider', 'Persona, organización o entidad responsable de hacer que un servicio esté disponible para los consumidores.']
+], [
+  ['Actor que provee la conectividad y el transporte de los servicios desde los proveedores hasta los consumidores:', 0],
+  ['Actor que negocia las relaciones entre proveedores y consumidores de la nube:', 1],
+  ['Actor que evalúa de forma independiente las operaciones del sistema de información y la seguridad de la implementación:', 2],
+  ['Persona, organización o entidad responsable de hacer que un servicio esté disponible:', 3]
 ]);
 
 SET('AD', 'movil', 'movil', 'CEN-11 · lám. 24-26 · Nube móvil', [
